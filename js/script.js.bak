@@ -1,0 +1,390 @@
+var body = document.body;
+body.onload = pagina_inicio;
+
+var pag1 = document.getElementById('discos').getElementsByTagName('a')[1];
+pag1.onclick = pagina_inicio;
+var pag2 = document.getElementById('discos').getElementsByTagName('a')[2];
+pag2.onclick = pagina_dos;
+var pag3 = document.getElementById('discos').getElementsByTagName('a')[3];
+pag3.onclick = pagina_tres;
+var boton_carro = document.getElementById('boton_carro').getElementsByTagName('a')[0];
+boton_carro.onclick = carrito;
+
+function pagina_inicio(){dicografia(0); return false;}
+function pagina_dos(){dicografia(1); return false;}
+function pagina_tres(){dicografia(2); return false;}
+
+/*Nota para una mejor lectura del codigo
+La construcion se fue realizando de abajo (la ultima funcion) hacia arriba (la primer funcion)
+Si algo se ve fuera de contexto al principio es porque sirve mas a bajo durante la funcion probablemente en alguna sugunda alternativa
+Administracion del tiempo:
+3hs 7 dias
+total: 21hs + correccion de horrores esteticos (500años de eternidad)
+*/
+
+/*
+ToDo
+	hacer que cuando cambio de categoria un disco se marque como "Oferta Espcial".... div mas grande con fondo naranja bordes reondeados
+	y parte superior diciendo OFERTA ESPACIAL en rojo (fondo completo del texto)
+	"desaparecer" a los 10 segundos
+	
+	hacer fundido de descripcion de los discos
+	
+	si se puede hacer que la ventana a paresca a una distacia razonable del cursor (y no siempre en la misma pocicion como ahora)
+	
+	ventana modal para el carrito de compras (ya que tengo que agregar la etiqueta form usarla como cuadro contendor)
+		//es una padata en las bolas cambiar la estructura de los divs... tene quidado y hace backup 
+		
+	agregar datos visuales permanentes para el comprador (hoja en la que esta, cantidad de discos, subtotal)
+	
+	hacer parte de cheout (compra efectuada con resumen, ingreso de datos, y pago de la compra... con posibilidad de cancelar para seguir agregando)
+		hacer que se bloque el agregado de items durante el checkout (una variable y listo 0, 1)
+		//revisa el PDF para poner todos los datos como Nombre, Apellido, etc.
+		
+	validacion de datos <<<---- uy que plomo!!
+	
+	usar alteraciones de css (facil para los aparecer uso opacidad)
+*/
+
+function realizar_compra() {
+	console.log('realizar_compra');
+}
+
+function eliminar_item() {
+	this.parentNode.parentNode.parentNode.removeChild(this.parentNode.parentNode);
+	
+}
+
+function carrito(bandera) {
+	
+	//colocar etiqueta form porque estoy usando input
+
+	var caja = document.getElementById('caja');
+	var discografia = document.getElementById('discografia');
+	
+	var boton_carro__ =  setTimeout(boton_carro_, 25);
+	function boton_carro_() {
+		var boton_carro =  document.getElementById('boton_carro').getElementsByTagName('a')[0];
+		var boton_valor = boton_carro.getAttribute('id');	
+		if (boton_valor == 'abrir') { boton_carro.setAttribute('id','cerrar'); }
+		else { boton_carro.setAttribute('id','abrir'); }
+		clearTimeout(boton_carro__);
+	}
+	
+	var detalleCompra = document.getElementById('detalleCompra');
+	var disco_id2 = this.getAttribute('id');
+	
+	if (disco_id2=='abrir') {
+		
+		if (detalleCompra!=undefined) {caja.removeChild(detalleCompra);}
+				
+		detalleCompra = document.createElement('div');
+		var caja_div = document.createElement('div');
+		var elmt_tabla = document.createElement('table');
+		var elmt_thead = document.createElement('thead');
+		var elmt_th1 = document.createElement('th');
+		var elmt_th2 = document.createElement('th');
+		var elmt_th3 = document.createElement('th');
+		var elmt_th4 = document.createElement('th');
+		var elmt_tbody = document.createElement('tbody');
+		
+		detalleCompra.setAttribute('id','detalleCompra');
+		
+		var elmt_th1_txt = document.createTextNode('Portada');
+		var elmt_th2_txt = document.createTextNode('Descripcion');
+		var elmt_th3_txt = document.createTextNode('Cantidad');
+		var elmt_th4_txt = document.createTextNode('Remover');
+		
+		elmt_th1.appendChild(elmt_th1_txt);
+		elmt_th2.appendChild(elmt_th2_txt);
+		elmt_th3.appendChild(elmt_th3_txt);
+		elmt_th4.appendChild(elmt_th4_txt);
+		
+		caja.insertBefore(detalleCompra, discografia);
+		detalleCompra.appendChild(caja_div);
+		caja_div.appendChild(elmt_tabla);
+		elmt_tabla.appendChild(elmt_thead);
+		elmt_thead.appendChild(elmt_th1);
+		elmt_thead.appendChild(elmt_th2);
+		elmt_thead.appendChild(elmt_th3);
+		elmt_thead.appendChild(elmt_th4);
+		elmt_tabla.appendChild(elmt_tbody);
+		
+		for (var i in discos) {
+			if (discos[i].estado == 1) {
+				
+				var elmt_tr = document.createElement('tr');
+				var elmt_td1 = document.createElement('td');
+				var elmt_td2 = document.createElement('td'); 
+				var elmt_td3 = document.createElement('td'); 
+				var elmt_td4 = document.createElement('td');
+				var elmt_img = document.createElement('img');
+				var elmt_input = document.createElement('input');
+				var elmt_a = document.createElement('a');
+			
+				elmt_img.setAttribute('src',ruta_tapas+discos[i].imagen);
+				elmt_img.setAttribute('alt',discos[i].titulo);
+				elmt_input.setAttribute('type','text');
+				elmt_input.setAttribute('name','cantidad');
+				elmt_input.setAttribute('id','cantidad');
+				elmt_input.setAttribute('value',discos[i].cantidad);
+				elmt_input.setAttribute('size','2');
+				elmt_a.setAttribute('href','#');
+				elmt_a.setAttribute('id',i);
+				elmt_a.onclick = function () {
+					this.parentNode.parentNode.parentNode.removeChild(this.parentNode.parentNode);
+					var j = this.getAttribute('id');
+					discos[j].cantidad = 0;
+					discos[j].estado = 0;
+					return false;
+				}
+				
+				var elmt_td2_txt = document.createTextNode('Descripcion');
+				var elmt_a_txt = document.createTextNode('X');
+				
+				elmt_tbody.appendChild(elmt_tr);
+				elmt_tr.appendChild(elmt_td1);
+				elmt_tr.appendChild(elmt_td2);
+				elmt_tr.appendChild(elmt_td3);
+				elmt_tr.appendChild(elmt_td4);
+				elmt_td1.appendChild(elmt_img);
+				elmt_td2.appendChild(elmt_td2_txt);
+				elmt_td3.appendChild(elmt_input);
+				elmt_td4.appendChild(elmt_a);
+				elmt_a.appendChild(elmt_a_txt);
+			}//cierre - if (discos[i].estado == 1) {
+		}//cierre - for (var i in discos) {
+		
+		var boton_cerrar_carrito_div = document.createElement('div');
+		var boton_cerrar_carrito_a = document.createElement('a');
+		var boton_cerrar_carrito_txt = document.createTextNode('Cerrar');
+		
+		var boton_actualizar_carrito_div = document.createElement('div');
+		var boton_actualizar_carrito_a = document.createElement('a');
+		var boton_actualizar_carrito_txt = document.createTextNode('Actualizar');
+		
+		var boton_comprar_carrito_div = document.createElement('div');
+		var boton_comprar_carrito_a = document.createElement('a');
+		var boton_comprar_carrito_txt = document.createTextNode('Efectuar Compra');
+		
+		boton_cerrar_carrito_a.setAttribute('id','cerrar');
+		boton_cerrar_carrito_a.onclick = carrito;
+		boton_actualizar_carrito_a.setAttribute('id','actualizar');
+		boton_actualizar_carrito_a.onclick = carrito;
+		boton_comprar_carrito_a.setAttribute('id','realizar_compra');
+		boton_comprar_carrito_a.onclick = realizar_compra;
+		
+		caja_div.appendChild(boton_cerrar_carrito_div);
+		boton_cerrar_carrito_div.appendChild(boton_cerrar_carrito_a);
+		boton_cerrar_carrito_a.appendChild(boton_cerrar_carrito_txt);
+		
+		caja_div.appendChild(boton_actualizar_carrito_div);
+		boton_actualizar_carrito_div.appendChild(boton_actualizar_carrito_a);
+		boton_actualizar_carrito_a.appendChild(boton_actualizar_carrito_txt);
+		
+		caja_div.appendChild(boton_comprar_carrito_div);
+		boton_comprar_carrito_div.appendChild(boton_comprar_carrito_a);
+		boton_comprar_carrito_a.appendChild(boton_comprar_carrito_txt);
+		
+	}else if (disco_id2=='actualizar') {
+		/*
+		Carga array de las filas de los productos
+		obtiene el "Id del productos desde los elementos a (que son las etiquetas para eliminar)
+		obtiene el Valor desde el campo input
+		usa esos datos para actualizar el array discos ubicado en array.js
+		Cambia el estado del boton actualizar un instante y lo restablece
+		*/
+		var fila = detalleCompra.getElementsByTagName('tbody')[0].getElementsByTagName('tr');
+		
+		for (var j in fila) { 
+			if(!isNaN(fila)){
+				var id = fila[j].getElementsByTagName('a')[0];
+				id = id.getAttribute('id');
+				var valor = fila[j].getElementsByTagName('input')[0].value;
+			
+				discos[id].cantidad = valor;
+			}
+		}
+		
+		var this_ = this;
+		this_.innerHTML = 'Echo!!';
+		
+		function restablecer_boton() { this_.innerHTML = 'Actualizar'; clearTimeout(intervalo);}
+		var intervalo = setTimeout(restablecer_boton, 600);
+				
+	}else if (disco_id2=='cerrar') { 
+		caja.removeChild(detalleCompra);
+	}else {
+		this.setAttribute('id','cerrar');
+		carrito('cerrar');
+	}
+	
+	return false;
+}
+
+function descripcion_disco(){
+	
+	var disco_id = this.getAttribute('id');
+
+	var head = document.getElementById('head');
+	var detalleDisco = document.getElementById('detalleDisco');
+	
+	if (disco_id!='cerrar' && disco_id!='boton_agregar') {
+		
+		if (detalleDisco!=undefined) { head.removeChild(detalleDisco); }
+		
+		//Creacion de los elementos
+		
+		var detalleDisco = document.createElement('div');
+		var caja_div = document.createElement('div');
+		var caja_h2 = document.createElement('h2');
+		var imag = document.createElement('img');
+		var caja_p = document.createElement('p');
+		var caja_cerrar = document.createElement('div');
+		var caja_form = document.createElement('form');
+		var caja_precio = document.createElement('div');
+		var caja_cant_label = document.createElement('label');
+		var caja_cant_input = document.createElement('input');
+		var caja_hidden = document.createElement('input');
+		var caja_agregar = document.createElement('div');
+		
+		//Seteo de los elementos
+		
+		detalleDisco.setAttribute('id','detalleDisco');
+		caja_cerrar.setAttribute('id','cerrar');
+		imag.setAttribute('src',ruta_tapas+discos[disco_id].imagen);
+		imag.setAttribute('alt',discos[disco_id].titulo);
+		caja_form.setAttribute('id','form_agregar');
+		caja_precio.setAttribute('id','precio');
+		caja_cant_label.setAttribute('for','cant_agrega');
+		caja_cant_input.setAttribute('type','text');
+		caja_cant_input.setAttribute('name','cant_agrega');
+		caja_cant_input.setAttribute('size','3');
+		caja_cant_input.setAttribute('value',discos[disco_id].cantidad);
+		caja_agregar.setAttribute('id','boton_agregar');
+		caja_hidden.setAttribute('type','hidden');
+		caja_hidden.setAttribute('name','discoId');
+		caja_hidden.setAttribute('value',disco_id);
+		
+		//Asignacion de funciones a los elementos activos
+		
+		caja_cerrar.onclick = descripcion_disco;
+		caja_agregar.onclick = descripcion_disco;
+		
+		//Cracion de los textos a asignar
+		
+		var txt_titulo_disco = document.createTextNode(discos[disco_id].titulo);
+		var txt_descripccion_disco = document.createTextNode(discos[disco_id].titulo);
+		var close_ = document.createTextNode('X');
+		var txt_agregar = document.createTextNode('Agregar');
+		var txt_cantidad = document.createTextNode('Cantidad: ');
+		var txt_precio = document.createTextNode('Precio: '+discos[disco_id].precio+'$');
+		
+		//Asignacion de contenidos
+		
+		caja_h2.appendChild(txt_titulo_disco);
+		caja_p.appendChild(txt_descripccion_disco);
+		caja_cerrar.appendChild(close_);
+		caja_cant_label.appendChild(txt_cantidad);
+		caja_agregar.appendChild(txt_agregar);
+		caja_precio.appendChild(txt_precio);
+		
+		//Insercion de Elementos
+		
+		head.appendChild(detalleDisco);
+		detalleDisco.appendChild(caja_div);
+		caja_div.appendChild(caja_cerrar);
+		caja_div.appendChild(caja_h2);
+		caja_div.appendChild(imag);
+		caja_div.appendChild(caja_p);
+		caja_div.appendChild(caja_form);
+		caja_form.appendChild(caja_precio);
+		caja_form.appendChild(caja_cant_label);
+		caja_cant_label.appendChild(txt_cantidad);
+		caja_cant_label.appendChild(caja_cant_input);
+		caja_form.appendChild(caja_agregar);
+		caja_form.appendChild(caja_hidden);
+				
+	}else if(disco_id=='boton_agregar'){
+		var discoId = document.getElementById('detalleDisco').getElementsByTagName('input')[1].value;
+		discos[discoId].cantidad =  document.getElementById('detalleDisco').getElementsByTagName('input')[0].value;
+		document.getElementById('boton_agregar').innerHTML = 'Actualizar';
+		discos[discoId].estado = 1; //agregado
+		
+	}else{ head.removeChild(detalleDisco); }
+
+	return false;
+}
+
+function dicografia(pagina){
+//para agregar o quitar imagenes, hacerlo desde el array discos[] en array.js	
+
+//configuracion
+
+	//var pagina = 0;
+	var imgXfila=3;
+	var filas=2;
+	
+//fin-configuracion
+
+	
+	var comienzo = (pagina * (imgXfila * filas));
+	var cont_filas = 1;
+	var count_img = 0;
+	
+	var caja = document.getElementById('caja');
+	var discografia = document.getElementById('discografia');
+	
+	if (pagina!='cerrar') {
+
+		if (discografia!=undefined) {caja.removeChild(discografia);} //control de errores
+
+		discografia = document.createElement('ul');
+		discografia.setAttribute('id','discografia');
+		caja.appendChild(discografia);
+		
+
+	for (var i in discos) {
+	
+	if ((cont_filas <= filas) || (count_img < imgXfila)) {	
+		var modulo = i / imgXfila;
+		var redondeo = Math.floor(modulo);
+		var fin = Math.ceil(modulo);
+		
+		var j= parseInt(i) + comienzo;
+		
+		if (modulo == redondeo) {
+			var li1 = document.createElement('li');
+			var ul2 = document.createElement('ul');
+			ul2.setAttribute('class','clearfix');
+			
+			discografia.appendChild(li1);
+			li1.appendChild(ul2);
+			
+			cont_filas++;
+			count_img = 1;
+		}else{ count_img++; }
+	
+		if(discos[j]!=undefined){
+			var li3 = document.createElement('li');
+			var span1 = document.createElement('span');
+			var imagen = document.createElement('img');
+			var h2 = document.createElement('h2');
+		
+			imagen.src=ruta_tapas+discos[j].imagen;
+			imagen.alt=discos[j].titulo;
+			imagen.setAttribute('id',j)
+			imagen.onclick = descripcion_disco;
+			h2.innerHTML = discos[j].titulo;
+		
+			ul2.appendChild(li3);
+			li3.appendChild(span1);
+			span1.appendChild(imagen);
+			li3.appendChild(h2);
+		}
+	}
+	}//cierre -- for (var i in discos)
+	}else {caja.removeChild(discografia);} //cierre -- if (pagina!='cerrar')
+	
+	return false;
+}

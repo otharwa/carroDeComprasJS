@@ -1,0 +1,79 @@
+/* - Reset - */
+* {margin:0; padding:0; border:0; vertical-align: middle;}
+ul {	list-style: none;}
+h1 {font-size: 40px; text-align: center;}
+h2 {font-size: 15px; font-weight: normal; text-align: center;}
+p {font-size: 15px;}
+span {font-size: 15px;}
+em { font-style: italic; }
+strong { font-weight: bold; color: #333; }
+small { font-size: 80%; }
+a {text-decoration: none; color:inherit;}
+a:hover, a:focus {text-decoration: none; color: whitesmoke;}	
+a:visited {text-decoration: none;}
+
+.clearfix:before, .clearfix:after{
+		content: "/0200";
+      display: block;
+      overflow: hidden;
+      visibility: hidden;
+      width: 0;
+      height: 0; }
+.clearfix:after {clear: both;}
+	
+html,body{min-height: 100%;}
+body {background-image: url('../img/tramaOscura.png');*/ background-repeat: repeat; /*background-color: #F2EDD9;*/ color: whitesmoke;}
+
+#encabezado { width: 100%; background-color:rgba(13,6,6,0.5); margin-top:30px; margin-bottom:18px; padding: 3px 0;}
+#head {width:940px; position:relative; margin:auto; box-shadow:0 0 20px #000; font-family:verdana; height: 200px; background-image: url('../img/tramaOscuraRecta.png'); /*background-color: #C50000;*/ background-repeat: repeat;}
+#head > img {height: 180px; margin:8px 18px; float: left;}
+#head > div {background-color: rgba(120,55,55,0.75); width: 700px; float: right; margin:20px 18px 52px 0;}
+#head > div > h1 { background-color: rgba(15,5,5,0.75); margin:5px 0; padding:15px; font-family: Verdana, Helvetica, Sans; font-weight: normal; }
+#head > ul {float: right; background-color: rgb(15,6,6); padding:0 20px; margin-right: 10px;}
+#head > ul > li { margin:9px 10px;  display: inline-block; color: black;}
+#head > ul li a {background-color: rgb(145,0,0); padding: 3px 7px; font-weight: bold; font-family: serif; }
+
+#discos {position: relative;}
+#discos ul {display: none; position: absolute; z-index: 5; top:100%; background-color: rgb(15,6,6); padding:0;}
+#discos ul li {margin:10px 15px; width: 95px;}
+#discos:hover ul {display: block;}
+
+#caja{width:940px; margin:auto; font-family:Verdana, Helvetica, Sans;}
+
+#discografia {width: 100%;}
+#discografia > li { background-color: rgba(128,128,128,0.75); border-radius:10px; padding:10px 0; margin:13px 0;  box-shadow:0 0 8px #000;}
+#discografia > li:nth-last-child(even) {background-color: rgba(77,77,77,0.99);}
+#discografia > li > ul {background-color: rgb(5,5,5); margin:13px 0; text-align: center;}
+#discografia > li > ul > li {display: inline-block; width: 190px;  margin: 20px 30px;}
+#discografia > li > ul > li > span {display: inline-block; padding:4px;}
+#discografia > li > ul > li > span:hover {background-color: blueviolet;}
+#discografia > li > ul > li > span > img {height: 170px; }
+#discografia > li > ul > li > h2 {}
+
+#pie {background-color: #000; width:100%; text-align: center; padding:10px 0;} 
+#pie p {background-color: rgb(51,51,51); padding:5px 0; width:940px; margin:auto; font-family:Verdana, Helvetica, Sans; border-radius:5px;}
+
+
+#head > #detalleDisco { position: absolute; width: 450px; top:35%; left: 25%; border-radius:7px; background-color: rgba(254,114,0,0.9);}
+#detalleDisco > div {background-color: black; margin:20px; border-radius:7px; padding:15px 30px;}
+#detalleDisco h2 {margin-bottom: 15px; font-weight: bolder;}
+#detalleDisco img {max-height: 300px;}
+#detalleDisco p { margin-top:15px;}
+#detalleDisco #cerrar {text-align: right; display: inline-block; color: white;}
+#detalleDisco #boton_agregar {text-align: left; display: inline-block; color: white;}
+#detalleDisco #precio {text-align: left; display: inline-block; color: white;}
+
+#detalleCompra {background-color: rgba(128,128,128,0.75); border-radius:10px; padding:5px 0; margin:13px auto;  box-shadow:0 0 8px #000;}
+#detalleCompra > div {background-color: rgb(5,5,5); margin:5px 0; text-align: center;}
+
+#detalleCompra table {border-spacing: 10px; margin:auto; padding: 10px;}
+#detalleCompra th, #detalleCompra td {padding: 5px;}
+#detalleCompra tr {margin:5px 0; background-color: rgb(51,51,51); }
+#detalleCompra img {max-height: 70px;}
+#detalleCompra td {margin-bottom: 15px; font-weight: bolder;}
+
+
+/*5hs
+reescalar imagenes de forma masiva
+convert -resize 200 ./* ./mini/
+*/

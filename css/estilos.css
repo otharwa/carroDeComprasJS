@@ -1,0 +1,85 @@
+/* - Reset - */
+* {margin:0; padding:0; border:0; vertical-align: middle;}
+ul {	list-style: none;}
+h1 {font-size: 30px; text-align: center;}
+h2 {font-size: 15px; font-weight: normal; text-align: center;}
+p {font-size: 15px;}
+span {font-size: 15px;}
+em { font-style: italic; }
+strong { font-weight: bold; color: #333; }
+small { font-size: 80%; }
+a {text-decoration: none; color:inherit;}
+a:hover, a:focus {text-decoration: none; color: whitesmoke;}	
+a:visited {text-decoration: none;}
+
+.clearfix:before, .clearfix:after{
+		content: "/0200";
+      display: block;
+      overflow: hidden;
+      visibility: hidden;
+      width: 0;
+      height: 0; }
+.clearfix:after {clear: both;}
+	
+html,body{min-height: 100%;}
+body {background-repeat: repeat; background-color: rgb(253,112,0); color: whitesmoke;}
+
+#encabezado { width: 100%; background-color:rgb(0,0,0); margin-top:30px; margin-bottom:18px; padding: 3px 0;}
+#head {width:940px;  margin:auto; box-shadow:0 0 20px #000; border-radius:7px; font-family:verdana; height: 200px; background-color: rgb(145,0,0); background-repeat: repeat;}
+#head > img {height: 180px; margin:8px 18px; float: left;}
+#head > div {background-color: rgba(255,200,200,0.2); width: 700px; border-radius:3px; float: right; margin:40px 0 70px 0;}
+#head > div > h1 { background-color: rgb(0,0,0); margin:5px 0; padding-bottom:5px; font-family: Verdana , Helvetica , Sans; font-weight: normal; }
+#head > ul {float: right; background-color: rgb(15,6,6); padding:0 50px; margin-right: 0;}
+#head > ul > li { margin:9px 10px;  display: inline-block; color: black;}
+#head > ul li a {background-color: rgb(198,0,0); padding: 3px 7px; font-weight: bold; font-family: serif; }
+
+#discos {position: relative;}
+#discos ul {display: none; position: absolute; z-index: 5; top:100%; background-color: rgb(15,6,6); padding:0;}
+#discos ul li {margin:10px 15px; width: 95px;}
+#discos:hover ul {display: block;}
+
+#caja{width:940px; margin:auto; font-family:Verdana, Helvetica, Sans; position:relative;}
+
+#discografia {width: 100%;}
+#discografia > li { background-color: rgba(128,128,128,0.75); border-radius:10px; padding:10px 0; margin:13px 0;  box-shadow:0 0 8px #000;}
+#discografia > li:nth-last-child(even) {background-color: rgba(77,77,77,0.99);}
+#discografia > li > ul {background-color: rgb(5,5,5); margin:13px 0; text-align: center;}
+#discografia > li > ul > li {display: inline-block; width: 190px;  margin: 20px 30px;}
+#discografia > li > ul > li  span {display: inline-block; padding:4px;}
+#discografia > li > ul > li > span:hover {background-color: blueviolet;}
+#discografia > li > ul > li  span > img {height: 170px; }
+
+#oferta_especial {background-color: rgb(240,0,0);  font-weight: bold; padding:3px; border-radius:7px;}
+
+#pie {background-color: #000; width:100%; text-align: center; padding:10px 0;} 
+#pie p {background-color: rgb(51,51,51); padding:5px 0; width:940px; margin:auto; font-family:Verdana, Helvetica, Sans; border-radius:5px;}
+
+
+#detalleDisco { position: absolute; width:100%; top:0; left: 0; height: 100%; border-radius:7px; background-color: rgba(80,5,5,0.7); box-shadow:0 0 8px #000; border-radius:7px;}
+#detalleDisco > div { width: 450px; background-color: #000; margin:50px auto 0 auto; border-radius:7px; padding:15px 30px; text-align: center; box-shadow:0 0 8px #000;}
+#detalleDisco h2 {margin-bottom: 15px; font-weight: bolder;}
+#detalleDisco img {max-height: 300px;}
+#detalleDisco p { margin-top:15px; text-align: left;}
+#detalleDisco #botonera {overflow: hidden; margin-top: 20px;}
+#detalleDisco #precio {float: left; border: red solid 1px; padding:3px; border-radius:7px;}
+#detalleDisco #boton_agregar {float: left; margin-left: 15px; margin-top: 3px; }
+#detalleDisco #cerrar {float: right; }
+
+
+#detalleCompra {background-color: rgba(128,128,128,0.75); border-radius:10px; padding:5px 0; margin:13px auto;  box-shadow:0 0 8px #000;}
+#detalleCompra > div {background-color: rgb(5,5,5); margin:5px 0; text-align: center;}
+
+#detalleCompra table {border-spacing: 10px; margin:auto; padding: 10px;}
+#detalleCompra th, #detalleCompra td {padding: 5px;}
+#detalleCompra tr {margin:5px 0; background-color: rgb(51,51,51); }
+#detalleCompra img {max-height: 70px;}
+#detalleCompra td {margin-bottom: 15px; font-weight: bolder;}
+#botonera_carrito_div {padding: 5px 0;}
+#botonera_carrito_div span {margin:0 35px;}
+#botonera_carrito_div span p { display: inline-block; width: 100px;}
+
+
+/*5hs
+reescalar imagenes de forma masiva
+convert -resize 200 ./* ./mini/
+*/
