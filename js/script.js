@@ -40,9 +40,6 @@ ToDo
 	
 	hacer parte de cheout (compra efectuada con resumen, ingreso de datos, y pago de la compra... con posibilidad de cancelar para seguir agregando)
 		hacer que se bloquee el agregado de items durante el checkout (una variable y listo 0, 1)
-		//revisa el PDF para poner todos los datos como Nombre, Apellido, etc.
-		
-	validacion de datos <<<---- uy que plomo!!
 	
 	codigo feo y asqueroso, cuando lo empeze a escribir no conosia POO y no almacenaba los objetos en arrays
 */
@@ -51,6 +48,21 @@ function realizar_compra() {
 	//var detComp = document.getElementById('detalleCompra').getElementsByTagName('form')[0];
 	//detComp.removeChild( detComp.getElementsByTagName('table')[0] );
 	//detComp.removeChild( detComp.getElementById('botonera_carrito_div') );
+	
+	var pasosRestantes = function(estado){
+		//estado es el numero de paso o limpiar para que no aparesca
+		var priv = {
+			pasos:['Estado','Detalle de Compra','Datos de Compra','Finalizado!!'],
+			dom:[],
+			cambiarA:function(){
+				dom.[0] = cE('div');
+				dom.[1] = cE('ul');
+				
+			}
+		};
+		priv.cambiarA(estado);
+		//return objetoDom para insertar en el contexto
+	}
 	
 	var crearCarro = function(config){
 		var botones = [];
@@ -625,3 +637,4 @@ function discografia(pagina){
 	
 	return false;
 }
+function cE(elemento) {return document.createElement(elemento);}
