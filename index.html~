@@ -25,10 +25,10 @@
 		<p>Diseñado y Programado por Sebastian Arca</p>
 		<div id="pasosRestantes">
 			<ul>
-				<li>	<p class="num">1</p>	<p>-> Estado</p>	</li>
-				<li class="aqui">	<p class="num">2</p>	<p>->Detalle de Compra</p>	</li>
-				<li>	<p class="num">3</p>	<p>->Datos de Compra</p>	</li>
-				<li>	<p class="num">4</p>	<p>->Finalizado!!</p>	</li>
+				<li>	<p class="num">1</p>	<p>Estado</p>	</li>
+				<li class="aqui">	<p class="num">2</p>	<p>Detalle de Compra</p>	</li>
+				<li>	<p class="num">3</p>	<p>Datos de Compra</p>	</li>
+				<li>	<p class="num">4</p>	<p>Finalizado!!</p>	</li>
 			</ul>
 			<hr />
 		</div>

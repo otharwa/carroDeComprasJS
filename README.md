@@ -13,3 +13,4 @@ toDO
 + hacer que se bloquee el agregado de items durante el checkout (una variable y listo 0, 1) <<<--- revisa el PDF para poner todos los datos como Nombre, Apellido, 
 etc.
 + validacion de datos <<<---- uy que plomo!! --->> se puede usar lo nuevo aprendido Objetos :D
++ subir muestra a la-nave.com.ar/portf/carroDeComprasJS

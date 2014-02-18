@@ -1,20 +1,20 @@
 var body = document.body;
-body.onload = function () {dicografia(0); return false;}
+body.onload = function () {discografia(0); return false;}
 
 var pagIndex = document.getElementById('index').getElementsByTagName('a')[0];
-pagIndex.onclick = function () {dicografia('cerrar'); return false; }
+pagIndex.onclick = function () {discografia('cerrar'); return false; }
 
 var pag0 = document.getElementById('discos').getElementsByTagName('a')[0];
 pag0.onclick = function () { return false; }
 
 var pag1 = document.getElementById('discos').getElementsByTagName('a')[1];
-pag1.onclick = function () {dicografia(0); return false;}
+pag1.onclick = function () {discografia(0); return false;}
 
 var pag2 = document.getElementById('discos').getElementsByTagName('a')[2];
-pag2.onclick = function () {dicografia(1); return false;}
+pag2.onclick = function () {discografia(1); return false;}
 
 var pag3 = document.getElementById('discos').getElementsByTagName('a')[3];
-pag3.onclick = function () {dicografia(2); return false;}
+pag3.onclick = function () {discografia(2); return false;}
 
 var boton_carro = document.getElementById('boton_carro').getElementsByTagName('a')[0];
 boton_carro.onclick = carrito;
@@ -43,10 +43,164 @@ ToDo
 		//revisa el PDF para poner todos los datos como Nombre, Apellido, etc.
 		
 	validacion de datos <<<---- uy que plomo!!
+	
+	codigo feo y asqueroso, cuando lo empeze a escribir no conosia POO y no almacenaba los objetos en arrays
 */
 
 function realizar_compra() {
-	console.log('realizar_compra');
+	//var detComp = document.getElementById('detalleCompra').getElementsByTagName('form')[0];
+	//detComp.removeChild( detComp.getElementsByTagName('table')[0] );
+	//detComp.removeChild( detComp.getElementById('botonera_carrito_div') );
+	
+	var crearCarro = function(config){
+		var botones = [];
+		var priv = {
+			tabla1:['titulo','cantidad','costo c/u'],
+			submitStatus:false,
+			formContacto:[
+				{tipo:'text',formato:'texto',mostrar:'Nombre',namE:'nombre',requerido:true},
+				{tipo:'text',formato:'texto',mostrar:'Apellido',namE:'apellido',requerido:true},
+				{tipo:'text',formato:'texto',mostrar:'Ciudad',namE:'ciudad',requerido:true},
+				{tipo:'text',formato:'texto',mostrar:'Provincia',namE:'prov',requerido:true},
+				{tipo:'select',mostrar:'Pais',namE:'pais',option:['Argentina','Chile','Uruguay','otro']},
+				{tipo:'textarea',formato:'texto',mostrar:'Direccion',namE:'direccion',requerido:true},
+				{tipo:'text',formato:'cp',mostrar:'CodigoPostal',namE:'cp',requerido:true},
+				{tipo:'text',formato:'tel',mostrar:'Telefono',namE:'tel',requerido:true},
+				{tipo:'text',formato:'email',mostrar:'E-Mail',namE:'email',requerido:true}
+			],
+			mostrarError:function(this_ , texto){
+				var doms = []
+				doms[0] = document.createElement('div');
+				doms[1] = document.createTextNode( texto );
+				var sty = doms[0].style;
+				sty.border = "3px solid red";
+				sty.borderRadius = "7px";
+				sty.backgroundColor = "white";
+				sty.color = "black";
+				sty.padding = "10px";
+				sty.position = "absolute";
+				//sty.width = "150px";
+				sty.top = "-8px";
+				sty.right = "-170px";
+				
+				this_.appendChild(doms[0]);
+				doms[0].appendChild(doms[1]);
+				
+				priv.submitStatus = false;
+				
+				this_.style.border = "2px solid red";
+				this_.style.borderRadius = "4px";
+				
+				return doms[0];
+			},
+			ocultar:function( this_ ){
+				var op = 0.9;
+				var desva = function(){
+					op = op-0.1;
+					this_.style.opacity = op;
+					if(op > 0.1) setTimeout(desva,1);
+					else this_.parentNode.removeChild(this_);
+				};
+				desva();
+				priv.submitStatus = true;
+			},
+			validar:function(this_ , tipoDato){
+				
+				if(tipoDato == undefined) return false;
+				console.log( this_);
+				
+				switch(tipoDato){
+					case 'texto':
+						 var check = /^[a-zA-Z\á\é\í\ó\ú]*$/;
+					break;
+					case 'cp':
+						var check = /^[0-9]{4}$/;
+					break;
+					case 'tel':
+						var check = /^[\d]*(S\/N)?$/;
+					break;
+					case 'email':
+						var check = /^[\w\-\_\.]{3}[a-z0-9A-Z\-\_\.]*[@][\w]{3}[\w\-\_\.]*[\.]?[\w]{2,4}$/;
+					break;
+				}
+				
+				if(! check.test( this_.value ) )
+					var erno = priv.mostrarError(this_.parentNode, "campo invalido");
+				else if( erno != undefined ) {
+					var tiemp = setTimeout( function(){ 
+						priv.ocultar(erno); 
+						clearTimeout(tiemp);
+						this_.parentNode.style.border = "none"; 
+					},1024);
+				}else this_.parentNode.style.border = "none"; 
+			},
+			crear:function(){
+				var form = document.getElementById('detalleCompra').getElementsByTagName('form')[0];
+				form.setAttribute('action','#');
+				form.setAttribute('method','post');
+				form.onsubmit = function(){ return false;};
+				form.innerHTML = "";
+				
+				var inptS = [];
+				var fieldset = document.createElement('fieldset');
+				form.appendChild(fieldset);
+				
+				fieldset.style.padding = "5px";
+				fieldset.style.border = "2px solid white";
+				fieldset.style.borderRadius = "7px";
+				fieldset.style.width = "350px";
+				fieldset.style.textAlign = "left";
+				fieldset.style.display = "inline-block";
+				fieldset.style.margin = "20px";	
+								
+				for(var i=0; i< priv.formContacto.length ;i++){
+					var inpt = priv.formContacto[i];
+					var inptS = [];
+										
+					var label = document.createElement('label');
+					label.setAttribute('for',inpt.namE);
+					label.innerHTML = inpt.mostrar;
+										
+					if(inpt.tipo == 'textarea') {
+						inptS[i] = document.createElement('textarea');
+						//inptS[i].setAttribute('rows','15');
+						//inptS[i].setAttribute('cols','80');
+					}
+					else if (inpt.tipo == 'select') 
+						inptS[i] = document.createElement('select');
+					else {
+						inptS[i] = document.createElement('input');
+						inptS[i].setAttribute('type',inpt.tipo);
+					}
+					inptS[i].setAttribute('name',inpt.namE); //cuando expanda el objeto a los checkbox --> inpt.namE+'[]'
+					inptS[i].setAttribute('id',inpt.namE);
+					inptS[i].style.border = "2px solid green";
+					inptS[i].style.padding = "2px";
+					
+					label.appendChild( inptS[i] );
+					 var vv = inptS[i];
+					if( inpt.requerido == true  ) inptS[i].onchange = function(){ priv.validar( vv , inpt.formato); };
+					
+					if( inpt.tipo == 'select' ){
+						for(var j in inpt.option ){
+							var optionS = document.createElement('option');							
+							optionS.setAttribute('value',inpt.option[j]);
+							optionS.innerHTML = inpt.option[j];
+							
+							inptS[i].appendChild(optionS);
+						}	}
+					
+					fieldset.appendChild( label );
+				}	 }
+		};
+		var pub = {
+			crear:priv.crear()
+		}
+		return pub;
+	}
+	
+	var carro = crearCarro();
+	//carro.crear();
 }
 
 
@@ -56,7 +210,7 @@ function carrito() {
 	
 	var caja = document.getElementById('caja');
 	var discografia = document.getElementById('discografia');
-	
+
 	var boton_carro =  setTimeout(
 			function () {
 				var boton_carro_id =  document.getElementById('boton_carro').getElementsByTagName('a')[0];
@@ -71,10 +225,12 @@ function carrito() {
 	
 	if (disco_id2=='abrir') {
 		
-		if (detalleCompra!=undefined) {caja.removeChild(detalleCompra);}
+		if (detalleCompra!=undefined) caja.removeChild(detalleCompra);
+		
+		if (discografia!=undefined) caja.removeChild(discografia);
 				
 		detalleCompra = document.createElement('div');
-		var caja_div = document.createElement('div');
+		var caja_div = document.createElement('form');
 		var elmt_tabla = document.createElement('table');
 		var elmt_thead = document.createElement('thead');
 		var elmt_th1 = document.createElement('th');
@@ -84,6 +240,9 @@ function carrito() {
 		var elmt_tbody = document.createElement('tbody');
 		
 		detalleCompra.setAttribute('id','detalleCompra');
+		caja_div.setAttribute('method','post');
+		caja_div.setAttribute('action','#');
+		caja_div.onsubmit = function(){ return false; }
 		
 		var elmt_th1_txt = document.createTextNode('Portada');
 		var elmt_th2_txt = document.createTextNode('Descripcion');
@@ -95,7 +254,7 @@ function carrito() {
 		elmt_th3.appendChild(elmt_th3_txt);
 		elmt_th4.appendChild(elmt_th4_txt);
 		
-		caja.insertBefore(detalleCompra, discografia);
+		caja.appendChild(detalleCompra);
 		detalleCompra.appendChild(caja_div);
 		caja_div.appendChild(elmt_tabla);
 		elmt_tabla.appendChild(elmt_thead);
@@ -163,7 +322,7 @@ function carrito() {
 		var boton_comprar_carrito_span = document.createElement('span');
 		var boton_comprar_carrito_a = document.createElement('a');
 		var boton_comprar_carrito_img = document.createElement('img');
-		var boton_comprar_carrito_p = document.createElement('p');
+		var boton_comprar_carrito_p = document.createElement('span');
 		var boton_comprar_carrito_p_txt = document.createTextNode('Efectuar Compra');
 		
 		boton_cerrar_carrito_img.setAttribute('src',boton_cierre_img);
@@ -176,6 +335,7 @@ function carrito() {
 		boton_comprar_carrito_img.setAttribute('alt','siguiente');
 		boton_comprar_carrito_img.setAttribute('id','realizar_compra');
 		botonera_carrito_div.setAttribute('id','botonera_carrito_div');
+		boton_comprar_carrito_a.setAttribute('id', "comprarPaso2");
 		
 		boton_cerrar_carrito_img.onclick = carrito;
 		boton_actualizar_carrito_img.onclick = carrito;
@@ -194,8 +354,7 @@ function carrito() {
 		botonera_carrito_div.appendChild(boton_comprar_carrito_span);
 		boton_comprar_carrito_span.appendChild(boton_comprar_carrito_a);
 		boton_comprar_carrito_a.appendChild(boton_comprar_carrito_img);
-		boton_comprar_carrito_span.appendChild(boton_comprar_carrito_p);
-		boton_comprar_carrito_p.appendChild(boton_comprar_carrito_p_txt);
+		boton_comprar_carrito_a.appendChild(boton_comprar_carrito_p_txt);
 		
 	}else if (disco_id2=='actualizar') {
 		/*
@@ -219,7 +378,6 @@ function carrito() {
 		
 		var this_ = this;
 		this_.setAttribute('src',boton_echo_img);
-		console.log(this_.getAttribute('src'));
 		
 		var restablecer_boton = setTimeout(
 				function () {
@@ -230,19 +388,17 @@ function carrito() {
 	}else if (disco_id2=='cerrar') { 
 		
 		var opacidad = 0.99;
-		var ocultar = setInterval(
-			function () {
+		var ocultar = function () {
 				if (detalleCompra!=undefined) {
-					opacidad = parseFloat((opacidad*0.98));
-					if (opacidad<0.445) { opacidad = parseFloat((opacidad*0.89)); }
+					opacidad = parseFloat((opacidad-0.01));
 					detalleCompra.style.opacity = opacidad;
-					
+
 					if (opacidad<0.05) {
-						clearInterval(ocultar);
+						clearTimeout(cron);
 						caja.removeChild(detalleCompra);
-					}
-				}
-			},7);
+					} else var cron = setTimeout(ocultar,1); 	
+				}	};
+		ocultar();
 			
 	}else {
 		this.setAttribute('id','cerrar');
@@ -334,25 +490,21 @@ function descripcion_disco(){
 				
 	}else{ 
 		var opacidad = 0.99;
-		var ocultar = setInterval(
-			function () {
-					opacidad = parseFloat(opacidad*0.99);
-					if (opacidad<0.5) { opacidad = parseFloat((opacidad*0.89)); }
+		var ocultar = function () {
+					opacidad = parseFloat(opacidad-0.01);
 					detalleDisco.style.opacity = opacidad;
 					
 					if (opacidad<0.05) {
-						clearInterval(ocultar);
+						clearTimeout(cron);
 						caja.removeChild(detalleDisco); 
-					}
-			},1);
-			
-			
+					} else var cron = setTimeout(ocultar,1);
+				};
+		ocultar();
 	}
-
 	return false;
 }
 
-function dicografia(pagina){
+function discografia(pagina){
 //para agregar o quitar imagenes, hacerlo desde el array discos[] en array.js	
 
 //configuracion
@@ -370,10 +522,12 @@ function dicografia(pagina){
 	
 	var caja = document.getElementById('caja');
 	var discografia = document.getElementById('discografia');
+	var detalleCompra = document.getElementById('detalleCompra');
 	
 	if (pagina!='cerrar') {
 
-		if (discografia!=undefined) {caja.removeChild(discografia);}
+		if (discografia!=undefined) caja.removeChild(discografia);
+		if (detalleCompra!=undefined) caja.removeChild(detalleCompra); //--> si hubiera echo todo con objetos podria haber echo carrito.cerrar()
 
 		discografia = document.createElement('ul');
 		discografia.setAttribute('id','discografia');
@@ -428,23 +582,22 @@ function dicografia(pagina){
 					function () {						
 						var opa = 0.99;
 						
-						var opacar_oferta = setInterval(
-							function () {
-								opa = parseFloat(opa*0.99);
-								if (opa<0.5) { opa = parseFloat(opa*0.89); }
+						var opacar_oferta = function () {
+								opa = parseFloat(opa-0.01);
 								
 								var oferta_h2 = document.getElementById('oferta_especial'); //Redundancia para evitar errores
 								
 								if (oferta_h2!=undefined) {
 									oferta2.style.opacity = opa;
 								
-									if (opa<0.01) {
-										clearInterval(opacar_oferta);
+									if (opa<0.05) {
+										clearTimeout(cron);
 	
 										oferta_h2.parentNode.removeChild(oferta_h2);
-									}
-								}else {clearInterval(opacar_oferta); clearTimeout(limpiar_oferta); }
-								},7);
+									}else var cron = setTimeout(opacar_oferta,1);
+								}else  clearTimeout(limpiar_oferta); 
+								};
+						opacar_oferta();
 						clearTimeout(limpiar_oferta);
 					},10000);
 			}
@@ -458,17 +611,15 @@ function dicografia(pagina){
 	}//cierre -- for (var i in discos)
 	}else {
 		var opacidad = 0.99;
-		var ocultar = setInterval(
-			function () {
-					opacidad = parseFloat(opacidad*0.99);
-					if (opacidad<0.5) { opacidad = parseFloat((opacidad*0.89)); }
-					discografia.style.opacity = opacidad;
+		var ocultar = function () {
+					opacidad = parseFloat(opacidad-0.01);
 					
 					if (opacidad<0.05) {
-						clearInterval(ocultar);
+						clearTimeout(cron);
 						caja.removeChild(discografia);
-					}
-			},7);
+					} else var cron = setTimeout(ocultar,1);
+			};
+		ocultar();
 		
 		} //cierre -- if (pagina!='cerrar')
 	
