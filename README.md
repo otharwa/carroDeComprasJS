@@ -12,6 +12,7 @@ toDO
 + hacer parte de cheout (compra efectuada con resumen, ingreso de datos, y pago de la compra... con posibilidad de cancelar para seguir agregando)
 + hacer que se bloquee el agregado de items durante el checkout (una variable y listo 0, 1) 
 etc.
-+ subir muestra a la-nave.com.ar/portf/carroDeComprasJS
 
 //Codigo realizado enteramente por Sebastian Arca sebastianarca@riseup.net
+
+Vista en linea http://la-nave.com.ar/portf/carroDeComprasJS
