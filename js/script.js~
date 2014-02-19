@@ -45,6 +45,11 @@ ToDo
 */
 
 function realizar_compra() {
+	//esta funcion carga el paso 2 de la compra.... luego de que el usuario apreto el boton "efectuar compra"
+	//Aqui se carga el CheckOut
+	
+	
+	
 	//var detComp = document.getElementById('detalleCompra').getElementsByTagName('form')[0];
 	//detComp.removeChild( detComp.getElementsByTagName('table')[0] );
 	//detComp.removeChild( detComp.getElementById('botonera_carrito_div') );
@@ -67,7 +72,7 @@ function realizar_compra() {
 					var p = cE('p');
 					p.setAttribute('class','num');
 					var p2 = cE('p');
-					var numero = document.createTextNode(i);
+					var numero = document.createTextNode(i+1);
 					var texto = document.createTextNode(priv.pasos[i]);
 										
 					if(i == estado) priv.dom[i].setAttribute('class','aqui');
@@ -79,7 +84,6 @@ function realizar_compra() {
 					p.appendChild(numero);
 					p2.appendChild(texto);
 				}
-				priv.div.appendChild(document.createElement('hr'));
 			}
 		};
 		
@@ -230,7 +234,7 @@ function realizar_compra() {
 					
 					fieldset.appendChild( label );
 				}
-				var pasos = pasosRestantes(3);
+				var pasos = pasosRestantes(2);
 				form.appendChild(pasos);
 				 }
 		};
@@ -241,11 +245,15 @@ function realizar_compra() {
 	}
 	
 	var carro = crearCarro();
+	carro.crear();
+	
 	//carro.crear();
 }
 
 
 function carrito() {
+	
+	//Esta es la parte dinamica del carro de compras, donde el usuario puede ver y modificar sus acciones
 	
 	//colocar etiqueta form porque estoy usando input
 	
