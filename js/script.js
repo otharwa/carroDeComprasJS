@@ -248,6 +248,12 @@ function realizar_compra() {
 	carro.crear();
 	carro.crear();
 	//carro.crear();
+	
+	/*para generar varias instancias del formulario puedo hacer que
+		1 carro.config --> te permite modificar los elementos de formulario
+		2 carro.crear --> los crea con la configuracion anterior y los carga en un array
+		3 carro.mostrar --> lee el array donde estan los formularios creados y los coloca en el general, para ser vistos
+	*/
 }
 
 
