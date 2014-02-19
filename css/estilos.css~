@@ -83,13 +83,13 @@ body {background-repeat: repeat; background-color: rgb(253,112,0); color: whites
 #comprarPaso2 { display: inline-block; width: 70px; font-size: 12px;}
 
 #pasosRestantes {position: relative; text-align:center;}
-#pasosRestantes ul {margin:5px;}
+#pasosRestantes ul {margin:10px;}
 #pasosRestantes ul > li {width: 90px; margin:10px; display: inline;}
 #pasosRestantes li p { padding:0; margin:0; background: none; width: 90px;  display: inline;}
 #pasosRestantes p.num { border-radius: 30px;  width:30px; height: 30px;  padding:4px 10px; border: 2px solid black; background-color:whitesmoke; color:black; font-size:14px;}
 
 #pasosRestantes hr {position: absolute; top:35%;}
-#pasosRestantes .aqui {}
+#pasosRestantes .aqui > .num {background-color:red; border-color:white; color:white;}
 
 /*5hs
 reescalar imagenes de forma masiva

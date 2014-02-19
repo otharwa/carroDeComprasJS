@@ -89,7 +89,7 @@ body {background-repeat: repeat; background-color: rgb(253,112,0); color: whites
 #pasosRestantes p.num { border-radius: 30px;  width:30px; height: 30px;  padding:4px 10px; border: 2px solid black; background-color:whitesmoke; color:black; font-size:14px;}
 
 #pasosRestantes hr {position: absolute; top:35%;}
-#pasosRestantes .aqui {}
+#pasosRestantes .aqui > .num {background-color:black; border-color:white; color:white;}
 
 /*5hs
 reescalar imagenes de forma masiva

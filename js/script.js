@@ -54,14 +54,40 @@ function realizar_compra() {
 		var priv = {
 			pasos:['Estado','Detalle de Compra','Datos de Compra','Finalizado!!'],
 			dom:[],
-			cambiarA:function(){
-				dom.[0] = cE('div');
-				dom.[1] = cE('ul');
+			div:false,
+			cambiarA:function(estado){
 				
+				priv.div = cE('div');
+				priv.div.setAttribute('id','pasosRestantes');
+				var ul = cE('ul');
+				priv.div.appendChild(ul);
+				
+				for(var i=0; i< priv.pasos.length ; i++){
+					priv.dom[i] = cE('li');
+					var p = cE('p');
+					p.setAttribute('class','num');
+					var p2 = cE('p');
+					var numero = document.createTextNode(i+1);
+					var texto = document.createTextNode(priv.pasos[i]);
+										
+					if(i == estado) priv.dom[i].setAttribute('class','aqui');
+					
+					ul.appendChild(priv.dom[i]);
+					priv.dom[i].appendChild(p);
+					priv.dom[i].appendChild(p2);
+					
+					p.appendChild(numero);
+					p2.appendChild(texto);
+				}
+				priv.div.appendChild(document.createElement('hr'));
 			}
 		};
+		
 		priv.cambiarA(estado);
-		//return objetoDom para insertar en el contexto
+		
+		return priv.div;
+		//se puede hacer que return{cambiarA:funtion(numero){priv.cambiarA(numero)},crear:priv.crear()}
+		//para alivianar recursos de procesamiento
 	}
 	
 	var crearCarro = function(config){
@@ -203,7 +229,10 @@ function realizar_compra() {
 						}	}
 					
 					fieldset.appendChild( label );
-				}	 }
+				}
+				var pasos = pasosRestantes(2);
+				form.appendChild(pasos);
+				 }
 		};
 		var pub = {
 			crear:priv.crear()
