@@ -97,38 +97,6 @@ function realizar_compra() {
 		//para alivianar recursos de procesamiento
 	}
 	
-	var formulario1 = cDom([
-		{objetoId:'div', etiqueta:'div',},
-		{objetoId:'titulo', etiqueta:'p', texto:'Datos de Contacto'},
-		{objetoId:'fieldset', etiqueta:'fieldset'},
-		{objetoId:'nombre', etiqueta:'input', type:'text', name:'nombre1', id:'nombre1', texto:'Nombre'},
-		{objetoId:'apellido', etiqueta:'input', type:'text', name:'apellido1', id:'apellido1', texto:'Apellido'},
-		{objetoId:'ciudad', etiqueta:'input', type:'text', name:'ciudad1', id:'ciudad1', texto:'Ciudad'},
-		{objetoId:'provincia', etiqueta:'input', type:'text', name:'provincia1', id:'provincia1', texto:'Provincia'},
-		{objetoId:'pais', etiqueta:'select', name:'pais1', id:'pais1', texto:'Pais', list:['Argentina','Chile','Uruguay','Otro']},
-		{objetoId:'direccion', etiqueta:'textarea', name:'direccion1', id:'nombre1', texto:'Direccion',rows:'2', cols:'20'},
-		{objetoId:'cp', etiqueta:'input', type:'text', name:'cp1', id:'cp1', texto:'CodigoPostal'},
-		{objetoId:'telefono', etiqueta:'input', type:'text', name:'telefono1', id:'telefono1', texto:'Telefono'},
-		{objetoId:'email', etiqueta:'input', type:'text', name:'email1', id:'email1', texto:'E-Mail'}
-	]);
-	
-	var formulario2 = cDom([
-		{objetoId:'div', etiqueta:'div',},
-		{objetoId:'titulo', etiqueta:'p', texto:'Datos de Entrega'},
-		{objetoId:'tilde', etiqueta:'input', type:'checkbox', name:'tilde', id:'tilde', texto:'¿Los mismos datos que el contacto?'},
-		{objetoId:'fieldset', etiqueta:'fieldset'},
-		{objetoId:'nombre', etiqueta:'input', type:'text', name:'nombre2', id:'nombre2', texto:'Nombre'},
-		{objetoId:'apellido', etiqueta:'input', type:'text', name:'apellido2', id:'apellido2', texto:'Apellido'},
-		{objetoId:'ciudad', etiqueta:'input', type:'text', name:'ciudad2', id:'ciudad2', texto:'Ciudad'},
-		{objetoId:'provincia', etiqueta:'input', type:'text', name:'provincia2', id:'provincia2', texto:'Provincia'},
-		{objetoId:'pais', etiqueta:'select', name:'pais1', id:'pais2', texto:'Pais', list:['Argentina','Chile','Uruguay','Otro']},
-		{objetoId:'direccion', etiqueta:'textarea', name:'direccion2', id:'nombre2', texto:'Direccion', rows:'2', cols:'20'},
-		{objetoId:'cp', etiqueta:'input', type:'text', name:'cp2', id:'cp2', texto:'CodigoPostal'},
-		{objetoId:'telefono', etiqueta:'input', type:'text', name:'telefono2', id:'telefono2', texto:'Telefono'},
-		{objetoId:'email', etiqueta:'input', type:'text', name:'email2', id:'email2', texto:'E-Mail'}
-	]);
-	
-	
 	var crearCarro = function(config){
 		var botones = [];
 		config = {
@@ -231,70 +199,76 @@ function realizar_compra() {
 				form.appendChild(pasos);
 			},
 			crear:function(){
-
-				//Formulario num 1
+				var inptS = [];
 				
-				priv.formulariosCompletosDOM.push(formulario1.div);
+				var fieldset = cE('fieldset');
+				var div = cE('div');
+				var pTitulo = cE('p');
 				
-				formulario1.div.appendChild(formulario1.titulo);
-				formulario1.div.appendChild(formulario1.fieldset);
+				priv.formulariosCompletosDOM.push(div);
 				
-				for(var obj in formulario1){
-					if( obj != 'div' && obj != 'titulo' && obj != 'fieldset'){
-						formulario1.fieldset.appendChild(formulario1[obj]);
-						domStyle(formulario1[obj],{
-							border: '2px solid green',
-							padding: '2px'});
-					}	}
+				fieldset.style.padding = "5px";
+				fieldset.style.border = "2px solid white";
+				fieldset.style.borderRadius = "7px";
+				fieldset.style.textAlign = "left";
 				
-				//Formulario num 2
+				div.style.width = "350px";
+				div.style.display = "inline-block";
+				div.style.margin = "20px";
 				
-				priv.formulariosCompletosDOM.push(formulario2.div);
+				pTitulo.style.textAlign = 'center'
+				pTitulo.style.paddingBottom = '15px';
 				
-				formulario2.div.appendChild(formulario2.titulo);
-				formulario2.div.appendChild(formulario2.tilde);
-				formulario2.div.appendChild(formulario2.fieldset);
+				pTitulo.appendChild(document.createTextNode(config.titulo));
+				div.appendChild(pTitulo);
 				
-				formulario2.tilde.onclick = function(){ 
-					if(this.childNodes[1].checked) 
-						formulario2.fieldset.style.opacity = 0.5;
-					else
-						formulario2.fieldset.style.opacity = 1;
+				if(config.extras.length > 0){
+					for(var h=0; h < config.extras.length ; h++){
+						div.appendChild(config.extras[h]);
+					}
 				}
 				
-				for(var obj in formulario2){
-					if( obj != 'div' && obj != 'titulo' && obj != 'fieldset' && obj != 'tilde' ){
-						formulario2.fieldset.appendChild(formulario2[obj]);
-						domStyle(formulario2[obj],{
-							border: '2px solid green',
-							padding: '2px'});
 							
-						var this_ = formulario2[obj].childNodes[1].value;
-						var tipo = formulario2[obj].childNodes[1].getAttribute('type');
-						formulario2[obj].onchange = function(){ priv.validar(this_, tipo); }
-					}	}
-				
-				domStyle([formulario2.fieldset, formulario1.fieldset ],{
-					padding: "5px",
-					border: "2px solid white",
-					borderRadius: "7px",
-					textAlign: "left"
-				});
-				domStyle([formulario2.div, formulario1.div ],{
-					width: "350px",
-					display: "inline-block",
-					margin: "20px"
-				});
-				domStyle([formulario2.titulo, formulario1.titulo ],{
-					textAlign: 'center',
-					paddingBottom: '15px'
-				});
-				
-				/* Esta comentado para porder reciclar los estilos
-				
+				div.appendChild(fieldset);			
+				for(var i=0; i< config.formContacto.length ;i++){
+					var inpt = config.formContacto[i];
+					var inptS = [];
+										
+					var label = cE('label');
+					label.setAttribute('for',inpt.namE);
+					label.innerHTML = inpt.mostrar;
+										
+					if(inpt.tipo == 'textarea') {
+						inptS[i] = cE('textarea');
+						//inptS[i].setAttribute('rows','15');
+						//inptS[i].setAttribute('cols','80');
+					}
+					else if (inpt.tipo == 'select') 
+						inptS[i] = cE('select');
+					else {
+						inptS[i] = cE('input');
+						inptS[i].setAttribute('type',inpt.tipo);
+					}
+					inptS[i].setAttribute('name',inpt.namE); //cuando expanda el objeto a los checkbox --> inpt.namE+'[]'
+					inptS[i].setAttribute('id',inpt.namE);
+					inptS[i].style.border = "2px solid green";
+					inptS[i].style.padding = "2px";
 					
+					label.appendChild( inptS[i] );
+					 var vv = inptS[i];
 					if( inpt.requerido == true  ) inptS[i].onchange = function(){ priv.validar( vv , inpt.formato); };
-				}*/ }
+					
+					if( inpt.tipo == 'select' ){
+						for(var j in inpt.option ){
+							var optionS = cE('option');							
+							optionS.setAttribute('value',inpt.option[j]);
+							optionS.innerHTML = inpt.option[j];
+							
+							inptS[i].appendChild(optionS);
+						}	}
+					
+					fieldset.appendChild( label );
+				} }
 		};
 		var pub = {
 			crear:function(){priv.crear()},
@@ -316,6 +290,7 @@ function realizar_compra() {
 	
 	tilde[0].appendChild(tilde[1]);
 	tilde[0].appendChild(tilde[2]);
+	console.log(tilde[1]);
 	
 	tilde[1].onclick = function (){	
 		console.log(this.checked)
@@ -326,10 +301,10 @@ function realizar_compra() {
 	var carro = crearCarro();
 	carro.crear(); //Genero el formulario
 	//Re-configurar los datos del formulario
-	//carro.config.titulo = 'Datos de Entrega';
-	//carro.config.extras.push(tilde[0]);
+	carro.config.titulo = 'Datos de Entrega';
+	carro.config.extras.push(tilde[0]);
 	//volver a generar el formulario
-	//carro.crear();
+	carro.crear();
 	//visualizar todo lo generado
 	carro.visualizar();
 

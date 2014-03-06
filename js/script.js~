@@ -1,23 +1,26 @@
 var body = document.body;
 body.onload = function () {discografia(0); return false;}
 
-var pagIndex = document.getElementById('index').getElementsByTagName('a')[0];
+var pagIndex = gEID('index').getElementsByTagName('a')[0];
 pagIndex.onclick = function () {discografia('cerrar'); return false; }
 
-var pag0 = document.getElementById('discos').getElementsByTagName('a')[0];
+var pag0 = gEID('discos').getElementsByTagName('a')[0];
 pag0.onclick = function () { return false; }
 
-var pag1 = document.getElementById('discos').getElementsByTagName('a')[1];
+var pag1 = gEID('discos').getElementsByTagName('a')[1];
 pag1.onclick = function () {discografia(0); return false;}
 
-var pag2 = document.getElementById('discos').getElementsByTagName('a')[2];
+var pag2 = gEID('discos').getElementsByTagName('a')[2];
 pag2.onclick = function () {discografia(1); return false;}
 
-var pag3 = document.getElementById('discos').getElementsByTagName('a')[3];
+var pag3 = gEID('discos').getElementsByTagName('a')[3];
 pag3.onclick = function () {discografia(2); return false;}
 
-var boton_carro = document.getElementById('boton_carro').getElementsByTagName('a')[0];
+var boton_carro = gEID('boton_carro').getElementsByTagName('a')[0];
 boton_carro.onclick = carrito;
+
+function cE(elemento) {return document.createElement(elemento);}
+function gEID(elemento) {return document.getElementById(elemento);}
 
 
 /*Nota para una mejor lectura del codigo
@@ -50,12 +53,12 @@ function realizar_compra() {
 	
 	
 	
-	//var detComp = document.getElementById('detalleCompra').getElementsByTagName('form')[0];
+	//var detComp = gEID('detalleCompra').getElementsByTagName('form')[0];
 	//detComp.removeChild( detComp.getElementsByTagName('table')[0] );
 	//detComp.removeChild( detComp.getElementById('botonera_carrito_div') );
 	
 	var pasosRestantes = function(estado){
-		//estado es el numero de paso o limpiar para que no aparesca
+		//var estado es el numero de paso o limpiar para que no aparesca
 		var priv = {
 			pasos:['Estado','Detalle de Compra','Datos de Compra','Finalizado!!'],
 			dom:[],
@@ -94,11 +97,42 @@ function realizar_compra() {
 		//para alivianar recursos de procesamiento
 	}
 	
+	var formulario1 = cDom([
+		{objetoId:'div', etiqueta:'div',},
+		{objetoId:'titulo', etiqueta:'p', texto:'Datos de Contacto'},
+		{objetoId:'fieldset', etiqueta:'fieldset'},
+		{objetoId:'nombre', etiqueta:'input', type:'text', name:'nombre1', id:'nombre1', texto:'Nombre'},
+		{objetoId:'apellido', etiqueta:'input', type:'text', name:'apellido1', id:'apellido1', texto:'Apellido'},
+		{objetoId:'ciudad', etiqueta:'input', type:'text', name:'ciudad1', id:'ciudad1', texto:'Ciudad'},
+		{objetoId:'provincia', etiqueta:'input', type:'text', name:'provincia1', id:'provincia1', texto:'Provincia'},
+		{objetoId:'pais', etiqueta:'select', name:'pais1', id:'pais1', texto:'Pais', list:['Argentina','Chile','Uruguay','Otro']},
+		{objetoId:'direccion', etiqueta:'textarea', name:'direccion1', id:'nombre1', texto:'Direccion',rows:'2', cols:'20'},
+		{objetoId:'cp', etiqueta:'input', type:'text', name:'cp1', id:'cp1', texto:'CodigoPostal'},
+		{objetoId:'telefono', etiqueta:'input', type:'text', name:'telefono1', id:'telefono1', texto:'Telefono'},
+		{objetoId:'email', etiqueta:'input', type:'text', name:'email1', id:'email1', texto:'E-Mail'}
+	]);
+	
+	var formulario2 = cDom([
+		{objetoId:'div', etiqueta:'div',},
+		{objetoId:'titulo', etiqueta:'p', texto:'Datos de Entrega'},
+		{objetoId:'tilde', etiqueta:'input', type:'checkbox', name:'tilde', id:'tilde', texto:'¿Los mismos datos que el contacto?'},
+		{objetoId:'fieldset', etiqueta:'fieldset'},
+		{objetoId:'nombre', etiqueta:'input', type:'text', name:'nombre2', id:'nombre2', texto:'Nombre'},
+		{objetoId:'apellido', etiqueta:'input', type:'text', name:'apellido2', id:'apellido2', texto:'Apellido'},
+		{objetoId:'ciudad', etiqueta:'input', type:'text', name:'ciudad2', id:'ciudad2', texto:'Ciudad'},
+		{objetoId:'provincia', etiqueta:'input', type:'text', name:'provincia2', id:'provincia2', texto:'Provincia'},
+		{objetoId:'pais', etiqueta:'select', name:'pais1', id:'pais2', texto:'Pais', list:['Argentina','Chile','Uruguay','Otro']},
+		{objetoId:'direccion', etiqueta:'textarea', name:'direccion2', id:'nombre2', texto:'Direccion', rows:'2', cols:'20'},
+		{objetoId:'cp', etiqueta:'input', type:'text', name:'cp2', id:'cp2', texto:'CodigoPostal'},
+		{objetoId:'telefono', etiqueta:'input', type:'text', name:'telefono2', id:'telefono2', texto:'Telefono'},
+		{objetoId:'email', etiqueta:'input', type:'text', name:'email2', id:'email2', texto:'E-Mail'}
+	]);
+	
+	
 	var crearCarro = function(config){
 		var botones = [];
-		var priv = {
-			tabla1:['titulo','cantidad','costo c/u'],
-			submitStatus:false,
+		config = {
+			titulo:'Datos de Contacto',
 			formContacto:[
 				{tipo:'text',formato:'texto',mostrar:'Nombre',namE:'nombre',requerido:true},
 				{tipo:'text',formato:'texto',mostrar:'Apellido',namE:'apellido',requerido:true},
@@ -110,9 +144,15 @@ function realizar_compra() {
 				{tipo:'text',formato:'tel',mostrar:'Telefono',namE:'tel',requerido:true},
 				{tipo:'text',formato:'email',mostrar:'E-Mail',namE:'email',requerido:true}
 			],
+			extras:[]
+		}
+		var priv = {
+			tabla1:['titulo','cantidad','costo c/u'],
+			submitStatus:false,
+			formulariosCompletosDOM:[],
 			mostrarError:function(this_ , texto){
 				var doms = []
-				doms[0] = document.createElement('div');
+				doms[0] = cE('div');
 				doms[1] = document.createTextNode( texto );
 				var sty = doms[0].style;
 				sty.border = "3px solid red";
@@ -176,78 +216,129 @@ function realizar_compra() {
 					},1024);
 				}else this_.parentNode.style.border = "none"; 
 			},
-			crear:function(){
-				var form = document.getElementById('detalleCompra').getElementsByTagName('form')[0];
+			visualizar:function(){
+				var form = gEID('detalleCompra').getElementsByTagName('form')[0];
 				form.setAttribute('action','#');
 				form.setAttribute('method','post');
 				form.onsubmit = function(){ return false;};
 				form.innerHTML = "";
 				
-				var inptS = [];
-				var fieldset = document.createElement('fieldset');
-				form.appendChild(fieldset);
-				
-				fieldset.style.padding = "5px";
-				fieldset.style.border = "2px solid white";
-				fieldset.style.borderRadius = "7px";
-				fieldset.style.width = "350px";
-				fieldset.style.textAlign = "left";
-				fieldset.style.display = "inline-block";
-				fieldset.style.margin = "20px";	
-								
-				for(var i=0; i< priv.formContacto.length ;i++){
-					var inpt = priv.formContacto[i];
-					var inptS = [];
-										
-					var label = document.createElement('label');
-					label.setAttribute('for',inpt.namE);
-					label.innerHTML = inpt.mostrar;
-										
-					if(inpt.tipo == 'textarea') {
-						inptS[i] = document.createElement('textarea');
-						//inptS[i].setAttribute('rows','15');
-						//inptS[i].setAttribute('cols','80');
-					}
-					else if (inpt.tipo == 'select') 
-						inptS[i] = document.createElement('select');
-					else {
-						inptS[i] = document.createElement('input');
-						inptS[i].setAttribute('type',inpt.tipo);
-					}
-					inptS[i].setAttribute('name',inpt.namE); //cuando expanda el objeto a los checkbox --> inpt.namE+'[]'
-					inptS[i].setAttribute('id',inpt.namE);
-					inptS[i].style.border = "2px solid green";
-					inptS[i].style.padding = "2px";
-					
-					label.appendChild( inptS[i] );
-					 var vv = inptS[i];
-					if( inpt.requerido == true  ) inptS[i].onchange = function(){ priv.validar( vv , inpt.formato); };
-					
-					if( inpt.tipo == 'select' ){
-						for(var j in inpt.option ){
-							var optionS = document.createElement('option');							
-							optionS.setAttribute('value',inpt.option[j]);
-							optionS.innerHTML = inpt.option[j];
-							
-							inptS[i].appendChild(optionS);
-						}	}
-					
-					fieldset.appendChild( label );
+				for(var i=0; i < priv.formulariosCompletosDOM.length ; i++){
+						form.appendChild(priv.formulariosCompletosDOM[i]);
 				}
+				
 				var pasos = pasosRestantes(2);
 				form.appendChild(pasos);
-				 }
+			},
+			crear:function(){
+
+				//Formulario num 1
+				
+				priv.formulariosCompletosDOM.push(formulario1.div);
+				
+				formulario1.div.appendChild(formulario1.titulo);
+				formulario1.div.appendChild(formulario1.fieldset);
+				
+				for(var obj in formulario1){
+					if( obj != 'div' && obj != 'titulo' && obj != 'fieldset'){
+						formulario1.fieldset.appendChild(formulario1[obj]);
+						domStyle(formulario1[obj],{
+							border: '2px solid green',
+							padding: '2px'});
+					}	}
+				
+				//Formulario num 2
+				
+				priv.formulariosCompletosDOM.push(formulario2.div);
+				
+				formulario2.div.appendChild(formulario2.titulo);
+				formulario2.div.appendChild(formulario2.tilde);
+				formulario2.div.appendChild(formulario2.fieldset);
+				
+				formulario2.tilde.onclick = function(){ 
+					if(this.childNodes[1].checked) 
+						formulario2.fieldset.style.opacity = 0.5;
+					else
+						formulario2.fieldset.style.opacity = 1;
+				}
+				
+				for(var obj in formulario2){
+					if( obj != 'div' && obj != 'titulo' && obj != 'fieldset' && obj != 'tilde' ){
+						formulario2.fieldset.appendChild(formulario2[obj]);
+						domStyle(formulario2[obj],{
+							border: '2px solid green',
+							padding: '2px'});
+							
+						var this_ = formulario2[obj].childNodes[1].value;
+						var tipo = formulario2[obj].childNodes[1].getAttribute('type');
+						formulario2[obj].onchange = function(){ priv.validar(this_, tipo); }
+					}	}
+				
+				domStyle([formulario2.fieldset, formulario1.fieldset ],{
+					padding: "5px",
+					border: "2px solid white",
+					borderRadius: "7px",
+					textAlign: "left"
+				});
+				domStyle([formulario2.div, formulario1.div ],{
+					width: "350px",
+					display: "inline-block",
+					margin: "20px"
+				});
+				domStyle([formulario2.titulo, formulario1.titulo ],{
+					textAlign: 'center',
+					paddingBottom: '15px'
+				});
+				
+				/* Esta comentado para porder reciclar los estilos
+				
+					
+					if( inpt.requerido == true  ) inptS[i].onchange = function(){ priv.validar( vv , inpt.formato); };
+				}*/ }
 		};
 		var pub = {
-			crear:priv.crear()
+			crear:function(){priv.crear()},
+			visualizar:function(){priv.visualizar()},
+			config:config
 		}
 		return pub;
 	}
 	
+	var tilde = [];
+	tilde[0] = cE('label');
+	tilde[1] = cE('input');
+	tilde[2] = document.createTextNode('Los mismos que de contacto ?');
+	
+	tilde[1].setAttribute('type','checkbox');
+	tilde[1].setAttribute('name','')
+	tilde[1].setAttribute('id','')
+	tilde[1].setAttribute('value','')
+	
+	tilde[0].appendChild(tilde[1]);
+	tilde[0].appendChild(tilde[2]);
+	
+	tilde[1].onclick = function (){	
+		console.log(this.checked)
+		if( this.checked == true ) this.parentNode.parentNode.style.opacity = 0.5;
+		else this.parentNode.parentNode.style.opacity = 1.0;
+	}
+	
 	var carro = crearCarro();
-	carro.crear();
-	carro.crear();
+	carro.crear(); //Genero el formulario
+	//Re-configurar los datos del formulario
+	//carro.config.titulo = 'Datos de Entrega';
+	//carro.config.extras.push(tilde[0]);
+	//volver a generar el formulario
 	//carro.crear();
+	//visualizar todo lo generado
+	carro.visualizar();
+
+	
+	/*para generar varias instancias del formulario puedo hacer que
+		1 carro.config --> te permite modificar los elementos de formulario
+		2 carro.crear --> los crea con la configuracion anterior y los carga en un array
+		3 carro.visualizar --> lee el array donde estan los formularios creados y los coloca en el general, para ser vistos
+	*/
 }
 
 
@@ -257,19 +348,19 @@ function carrito() {
 	
 	//colocar etiqueta form porque estoy usando input
 	
-	var caja = document.getElementById('caja');
-	var discografia = document.getElementById('discografia');
+	var caja = gEID('caja');
+	var discografia = gEID('discografia');
 
 	var boton_carro =  setTimeout(
 			function () {
-				var boton_carro_id =  document.getElementById('boton_carro').getElementsByTagName('a')[0];
+				var boton_carro_id =  gEID('boton_carro').getElementsByTagName('a')[0];
 				var boton_valor = boton_carro_id.getAttribute('id');	
 				if (boton_valor == 'abrir') { boton_carro_id.setAttribute('id','cerrar'); }
 				else { boton_carro_id.setAttribute('id','abrir'); }
 				clearTimeout(boton_carro);
 			}, 25);
 	
-	var detalleCompra = document.getElementById('detalleCompra');
+	var detalleCompra = gEID('detalleCompra');
 	var disco_id2 = this.getAttribute('id');
 	
 	if (disco_id2=='abrir') {
@@ -278,15 +369,15 @@ function carrito() {
 		
 		if (discografia!=undefined) caja.removeChild(discografia);
 				
-		detalleCompra = document.createElement('div');
-		var caja_div = document.createElement('form');
-		var elmt_tabla = document.createElement('table');
-		var elmt_thead = document.createElement('thead');
-		var elmt_th1 = document.createElement('th');
-		var elmt_th2 = document.createElement('th');
-		var elmt_th3 = document.createElement('th');
-		var elmt_th4 = document.createElement('th');
-		var elmt_tbody = document.createElement('tbody');
+		detalleCompra = cE('div');
+		var caja_div = cE('form');
+		var elmt_tabla = cE('table');
+		var elmt_thead = cE('thead');
+		var elmt_th1 = cE('th');
+		var elmt_th2 = cE('th');
+		var elmt_th3 = cE('th');
+		var elmt_th4 = cE('th');
+		var elmt_tbody = cE('tbody');
 		
 		detalleCompra.setAttribute('id','detalleCompra');
 		caja_div.setAttribute('method','post');
@@ -316,15 +407,15 @@ function carrito() {
 		for (var i in discos) {
 			if (discos[i].estado == 1) {
 				
-				var elmt_tr = document.createElement('tr');
-				var elmt_td1 = document.createElement('td');
-				var elmt_td2 = document.createElement('td'); 
-				var elmt_td3 = document.createElement('td'); 
-				var elmt_td4 = document.createElement('td');
-				var elmt_img = document.createElement('img');
-				var elmt_input = document.createElement('input');
-				var elmt_a = document.createElement('a');
-				var elmt_a_img = document.createElement('img');
+				var elmt_tr = cE('tr');
+				var elmt_td1 = cE('td');
+				var elmt_td2 = cE('td'); 
+				var elmt_td3 = cE('td'); 
+				var elmt_td4 = cE('td');
+				var elmt_img = cE('img');
+				var elmt_input = cE('input');
+				var elmt_a = cE('a');
+				var elmt_a_img = cE('img');
 			
 				elmt_img.setAttribute('src',ruta_tapas+discos[i].imagen);
 				elmt_img.setAttribute('alt',discos[i].titulo);
@@ -360,18 +451,18 @@ function carrito() {
 			}//cierre - if (discos[i].estado == 1) {
 		}//cierre - for (var i in discos) {
 		
-		var botonera_carrito_div = document.createElement('div');
+		var botonera_carrito_div = cE('div');
 		
-		var boton_cerrar_carrito_span = document.createElement('span');
-		var boton_cerrar_carrito_a = document.createElement('a');
-		var boton_cerrar_carrito_img = document.createElement('img');
-		var boton_actualizar_carrito_span = document.createElement('span');
-		var boton_actualizar_carrito_a = document.createElement('a');
-		var boton_actualizar_carrito_img = document.createElement('img');
-		var boton_comprar_carrito_span = document.createElement('span');
-		var boton_comprar_carrito_a = document.createElement('a');
-		var boton_comprar_carrito_img = document.createElement('img');
-		var boton_comprar_carrito_p = document.createElement('span');
+		var boton_cerrar_carrito_span = cE('span');
+		var boton_cerrar_carrito_a = cE('a');
+		var boton_cerrar_carrito_img = cE('img');
+		var boton_actualizar_carrito_span = cE('span');
+		var boton_actualizar_carrito_a = cE('a');
+		var boton_actualizar_carrito_img = cE('img');
+		var boton_comprar_carrito_span = cE('span');
+		var boton_comprar_carrito_a = cE('a');
+		var boton_comprar_carrito_img = cE('img');
+		var boton_comprar_carrito_p = cE('span');
 		var boton_comprar_carrito_p_txt = document.createTextNode('Efectuar Compra');
 		
 		boton_cerrar_carrito_img.setAttribute('src',boton_cierre_img);
@@ -461,8 +552,8 @@ function descripcion_disco(){
 	
 	var disco_id = this.getAttribute('id');
 
-	var caja = document.getElementById('caja');
-	var detalleDisco = document.getElementById('detalleDisco');
+	var caja = gEID('caja');
+	var detalleDisco = gEID('detalleDisco');
 	
 	if (disco_id!='cerrar') {
 		
@@ -470,17 +561,17 @@ function descripcion_disco(){
 		
 		//Creacion de los elementos
 		
-		var detalleDisco = document.createElement('div');
-		var caja_div = document.createElement('div');
-		var caja_h2 = document.createElement('h2');
-		var imag = document.createElement('img');
-		var caja_p = document.createElement('p');
+		var detalleDisco = cE('div');
+		var caja_div = cE('div');
+		var caja_h2 = cE('h2');
+		var imag = cE('img');
+		var caja_p = cE('p');
 		
-		var botonera = document.createElement('div');
-		var caja_precio = document.createElement('span');var txt_precio = document.createTextNode('Precio: '+discos[disco_id].precio+'$');
-		var boton_agregar = document.createElement('img');
-		var boton_cerrar = document.createElement('img');
-		var caja_hidden = document.createElement('input');
+		var botonera = cE('div');
+		var caja_precio = cE('span');var txt_precio = document.createTextNode('Precio: '+discos[disco_id].precio+'$');
+		var boton_agregar = cE('img');
+		var boton_cerrar = cE('img');
+		var caja_hidden = cE('input');
 		
 		var txt_titulo_disco = document.createTextNode(discos[disco_id].titulo);
 		var txt_descripccion_disco = document.createTextNode(discos[disco_id].titulo);
@@ -569,16 +660,16 @@ function discografia(pagina){
 	var cont_filas = 1;
 	var count_img = 0;
 	
-	var caja = document.getElementById('caja');
-	var discografia = document.getElementById('discografia');
-	var detalleCompra = document.getElementById('detalleCompra');
+	var caja = gEID('caja');
+	var discografia = gEID('discografia');
+	var detalleCompra = gEID('detalleCompra');
 	
 	if (pagina!='cerrar') {
 
 		if (discografia!=undefined) caja.removeChild(discografia);
 		if (detalleCompra!=undefined) caja.removeChild(detalleCompra); //--> si hubiera echo todo con objetos podria haber echo carrito.cerrar()
 
-		discografia = document.createElement('ul');
+		discografia = cE('ul');
 		discografia.setAttribute('id','discografia');
 		caja.appendChild(discografia);
 		
@@ -593,8 +684,8 @@ function discografia(pagina){
 		var j= parseInt(i) + comienzo;
 		
 		if (modulo == redondeo) {
-			var li1 = document.createElement('li');
-			var ul2 = document.createElement('ul');
+			var li1 = cE('li');
+			var ul2 = cE('ul');
 			ul2.setAttribute('class','clearfix');
 			
 			discografia.appendChild(li1);
@@ -605,10 +696,10 @@ function discografia(pagina){
 		}else{ count_img++; }
 	
 		if(discos[j]!=undefined){
-			var li3 = document.createElement('li');
-			var span1 = document.createElement('span');
-			var imagen = document.createElement('img');
-			var h2 = document.createElement('h2');
+			var li3 = cE('li');
+			var span1 = cE('span');
+			var imagen = cE('img');
+			var h2 = cE('h2');
 		
 			imagen.src=ruta_tapas+discos[j].imagen;
 			imagen.alt=discos[j].titulo;
@@ -619,7 +710,7 @@ function discografia(pagina){
 			ul2.appendChild(li3);
 			
 			if (discos[j].oferta==1) {
-				var oferta2 = document.createElement('h2');
+				var oferta2 = cE('h2');
 				var oferta2_txt = document.createTextNode('Oferta Especial');
 				
 				oferta2.setAttribute('id','oferta_especial');
@@ -634,7 +725,7 @@ function discografia(pagina){
 						var opacar_oferta = function () {
 								opa = parseFloat(opa-0.01);
 								
-								var oferta_h2 = document.getElementById('oferta_especial'); //Redundancia para evitar errores
+								var oferta_h2 = gEID('oferta_especial'); //Redundancia para evitar errores
 								
 								if (oferta_h2!=undefined) {
 									oferta2.style.opacity = opa;
@@ -674,4 +765,3 @@ function discografia(pagina){
 	
 	return false;
 }
-function cE(elemento) {return document.createElement(elemento);}
