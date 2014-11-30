@@ -58,15 +58,38 @@ function realizar_compra() {
 	//detComp.removeChild( detComp.getElementById('botonera_carrito_div') );
 	
 	var pasosRestantes = function(estado){
-		//var estado es el numero de paso o limpiar para que no aparesca
+		//Uso : pasosRestantes(n);
+		//Valores recividos : int > 0
+		//Valores almacenados en : var estaro
+		//Retorno :  objeto DOM para ser insertado donde corresponda
+
 		var priv = {
 			pasos:['Estado','Detalle de Compra','Datos de Compra','Finalizado!!'],
 			dom:[],
 			div:false,
 			cambiarA:function(estado){
 				
+				if(! (estado >= 0)) { console.log('Ingrese num >= 0') ; return false;}
+
 				priv.div = cE('div');
 				priv.div.setAttribute('id','pasosRestantes');
+//Botones Atras y Siguiente
+				var boton = cDom([
+					/*{objetoId:'imgAtras', etiqueta:'img', src: boton_atras_img, alt:'atras'},
+					{objetoId:'imgSiguiente', etiqueta:'img', src: boton_adelante_img, alt:'siguiente'},*/
+					{objetoId:'aAtras', etiqueta: 'a', href: '#', id: 'comprarPaso3', title: 'Paso Anterior'},
+					{objetoId:'aSiguiente', etiqueta: 'a', href: '#', id: 'comprarPaso2', title: 'Paso Siguiente' },
+					{objetoId:'divBotones', etiqueta: 'div'}
+				]);
+
+				//boton.aAtras.appendChild(boton.imgAtras);
+				//boton.aSiguiente.appendChild(boton.imgSiguiente);
+				boton.divBotones.appendChild(boton.aAtras);
+				boton.divBotones.appendChild(boton.aSiguiente);
+
+				priv.div.appendChild(boton.divBotones);
+
+//Indicativos de pasos
 				var ul = cE('ul');
 				priv.div.appendChild(ul);
 				
@@ -90,13 +113,14 @@ function realizar_compra() {
 			}
 		};
 		
+
 		priv.cambiarA(estado);
 		
 		return priv.div;
 		//se puede hacer que return{cambiarA:funtion(numero){priv.cambiarA(numero)},crear:priv.crear()}
 		//para alivianar recursos de procesamiento
 	}
-	
+//Crear DOMs del formulario
 	var formulario1 = cDom([
 		{objetoId:'div', etiqueta:'div',},
 		{objetoId:'titulo', etiqueta:'p', texto:'Datos de Contacto'},
@@ -125,27 +149,28 @@ function realizar_compra() {
 		{objetoId:'direccion', etiqueta:'textarea', name:'direccion2', id:'nombre2', texto:'Direccion', rows:'2', cols:'20'},
 		{objetoId:'cp', etiqueta:'input', type:'text', name:'cp2', id:'cp2', texto:'CodigoPostal'},
 		{objetoId:'telefono', etiqueta:'input', type:'text', name:'telefono2', id:'telefono2', texto:'Telefono'},
-		{objetoId:'email', etiqueta:'input', type:'text', name:'email2', id:'email2', texto:'E-Mail'}
+		{objetoId:'email', etiqueta:'input', type:'text', name:'email2', id:'email2', texto:'E-Mail', tipoComprobacion:'email'}
 	]);
+	
+	var botonSiguiente = cDom([
+		{objetoId:'botonSiguiente', etiqueta:'input', type:'submit', value:'Siguiente'}
+	]);
+
+//Los nombres de los campos requeridos, deben coincidir con los nombres de los objetos formulario
+	var camposRequeridos = {
+		nombre:'texto',
+		apellido:'texto',
+		ciudad:'texto',
+		provincia:'texto',
+		direccion:'texto',
+		cp:'cp',
+		telefono:'tel',
+		email:'email'
+	};
 	
 	
 	var crearCarro = function(config){
 		var botones = [];
-		config = {
-			titulo:'Datos de Contacto',
-			formContacto:[
-				{tipo:'text',formato:'texto',mostrar:'Nombre',namE:'nombre',requerido:true},
-				{tipo:'text',formato:'texto',mostrar:'Apellido',namE:'apellido',requerido:true},
-				{tipo:'text',formato:'texto',mostrar:'Ciudad',namE:'ciudad',requerido:true},
-				{tipo:'text',formato:'texto',mostrar:'Provincia',namE:'prov',requerido:true},
-				{tipo:'select',mostrar:'Pais',namE:'pais',option:['Argentina','Chile','Uruguay','otro']},
-				{tipo:'textarea',formato:'texto',mostrar:'Direccion',namE:'direccion',requerido:true},
-				{tipo:'text',formato:'cp',mostrar:'CodigoPostal',namE:'cp',requerido:true},
-				{tipo:'text',formato:'tel',mostrar:'Telefono',namE:'tel',requerido:true},
-				{tipo:'text',formato:'email',mostrar:'E-Mail',namE:'email',requerido:true}
-			],
-			extras:[]
-		}
 		var priv = {
 			tabla1:['titulo','cantidad','costo c/u'],
 			submitStatus:false,
@@ -173,6 +198,11 @@ function realizar_compra() {
 				this_.style.border = "2px solid red";
 				this_.style.borderRadius = "4px";
 				
+				var tiemp = setTimeout( function(){ 
+						priv.ocultar(doms[0]); 
+						clearTimeout(tiemp); 
+					},3060);
+				
 				return doms[0];
 			},
 			ocultar:function( this_ ){
@@ -189,11 +219,10 @@ function realizar_compra() {
 			validar:function(this_ , tipoDato){
 				
 				if(tipoDato == undefined) return false;
-				console.log( this_);
 				
 				switch(tipoDato){
 					case 'texto':
-						 var check = /^[a-zA-Z\á\é\í\ó\ú]*$/;
+						 var check = /[a-zA-Z\á\é\í\ó\ú]*$/;
 					break;
 					case 'cp':
 						var check = /^[0-9]{4}$/;
@@ -208,13 +237,7 @@ function realizar_compra() {
 				
 				if(! check.test( this_.value ) )
 					var erno = priv.mostrarError(this_.parentNode, "campo invalido");
-				else if( erno != undefined ) {
-					var tiemp = setTimeout( function(){ 
-						priv.ocultar(erno); 
-						clearTimeout(tiemp);
-						this_.parentNode.style.border = "none"; 
-					},1024);
-				}else this_.parentNode.style.border = "none"; 
+				else this_.parentNode.style.border = "none"; 
 			},
 			visualizar:function(){
 				var form = gEID('detalleCompra').getElementsByTagName('form')[0];
@@ -243,8 +266,9 @@ function realizar_compra() {
 					if( obj != 'div' && obj != 'titulo' && obj != 'fieldset'){
 						formulario1.fieldset.appendChild(formulario1[obj]);
 						domStyle(formulario1[obj],{
-							border: '2px solid green',
+							border: 'none',
 							padding: '2px'});
+						
 					}	}
 				
 				//Formulario num 2
@@ -256,28 +280,44 @@ function realizar_compra() {
 				formulario2.div.appendChild(formulario2.fieldset);
 				
 				formulario2.tilde.onclick = function(){ 
-					if(this.childNodes[1].checked) 
+					if(this.childNodes[1].checked) {
 						formulario2.fieldset.style.opacity = 0.5;
-					else
+						
+						for(var obj in formulario2){
+							if( obj != 'div' && obj != 'titulo' && obj != 'fieldset' && obj != 'tilde' ){
+								var input_ = formulario2[obj].childNodes[1];
+								input_.setAttribute('disabled','disabled');
+						}	}
+					}
+					else {
 						formulario2.fieldset.style.opacity = 1;
+						
+						for(var obj in formulario2){
+							if( obj != 'div' && obj != 'titulo' && obj != 'fieldset' && obj != 'tilde' ){
+								var input_ = formulario2[obj].childNodes[1];
+								input_.removeAttribute('disabled');
+						}	}
+					}
 				}
 				
 				for(var obj in formulario2){
 					if( obj != 'div' && obj != 'titulo' && obj != 'fieldset' && obj != 'tilde' ){
 						formulario2.fieldset.appendChild(formulario2[obj]);
 						domStyle(formulario2[obj],{
-							border: '2px solid green',
+							border: 'none',
 							padding: '2px'});
 							
-						var this_ = formulario2[obj].childNodes[1].value;
+						var this_ = formulario2[obj].childNodes[1];
 						var tipo = formulario2[obj].childNodes[1].getAttribute('type');
 						formulario2[obj].onchange = function(){ priv.validar(this_, tipo); }
 					}	}
+				formulario2.email.tipoComprobacion = 'email';
+				console.log(formulario2.email.tipoComprobacion);
 				
 				domStyle([formulario2.fieldset, formulario1.fieldset ],{
 					padding: "5px",
 					border: "2px solid white",
-					borderRadius: "7px",
+					borderRadius: "4px",
 					textAlign: "left"
 				});
 				domStyle([formulario2.div, formulario1.div ],{
@@ -290,11 +330,16 @@ function realizar_compra() {
 					paddingBottom: '15px'
 				});
 				
-				/* Esta comentado para porder reciclar los estilos
-				
+//Agregar Validacion de datos
+				for(var campo in camposRequeridos){
+					var regla = camposRequeridos[campo];
 					
-					if( inpt.requerido == true  ) inptS[i].onchange = function(){ priv.validar( vv , inpt.formato); };
-				}*/ }
+					var campo1 = formulario1[campo].childNodes[1];
+					var campo2 = formulario2[campo].childNodes[1];
+					if(formulario1[campo]) campo1.onchange = function(){ priv.validar(this,regla ); };
+					if(formulario2[campo]) campo2.onchange = function(){ priv.validar(this,regla ); };
+				}
+			}
 		};
 		var pub = {
 			crear:function(){priv.crear()},
@@ -304,41 +349,9 @@ function realizar_compra() {
 		return pub;
 	}
 	
-	var tilde = [];
-	tilde[0] = cE('label');
-	tilde[1] = cE('input');
-	tilde[2] = document.createTextNode('Los mismos que de contacto ?');
-	
-	tilde[1].setAttribute('type','checkbox');
-	tilde[1].setAttribute('name','')
-	tilde[1].setAttribute('id','')
-	tilde[1].setAttribute('value','')
-	
-	tilde[0].appendChild(tilde[1]);
-	tilde[0].appendChild(tilde[2]);
-	
-	tilde[1].onclick = function (){	
-		console.log(this.checked)
-		if( this.checked == true ) this.parentNode.parentNode.style.opacity = 0.5;
-		else this.parentNode.parentNode.style.opacity = 1.0;
-	}
-	
 	var carro = crearCarro();
-	carro.crear(); //Genero el formulario
-	//Re-configurar los datos del formulario
-	//carro.config.titulo = 'Datos de Entrega';
-	//carro.config.extras.push(tilde[0]);
-	//volver a generar el formulario
-	//carro.crear();
-	//visualizar todo lo generado
+	carro.crear();
 	carro.visualizar();
-
-	
-	/*para generar varias instancias del formulario puedo hacer que
-		1 carro.config --> te permite modificar los elementos de formulario
-		2 carro.crear --> los crea con la configuracion anterior y los carga en un array
-		3 carro.visualizar --> lee el array donde estan los formularios creados y los coloca en el general, para ser vistos
-	*/
 }
 
 
@@ -462,20 +475,21 @@ function carrito() {
 		var boton_comprar_carrito_span = cE('span');
 		var boton_comprar_carrito_a = cE('a');
 		var boton_comprar_carrito_img = cE('img');
-		var boton_comprar_carrito_p = cE('span');
-		var boton_comprar_carrito_p_txt = document.createTextNode('Efectuar Compra');
+		/*var boton_comprar_carrito_p = cE('span');
+		var boton_comprar_carrito_p_txt = document.createTextNode('Efectuar Compra');*/
 		
 		boton_cerrar_carrito_img.setAttribute('src',boton_cierre_img);
 		boton_cerrar_carrito_img.setAttribute('alt','cerrar');
-		boton_cerrar_carrito_img.setAttribute('id','cerrar')
+		boton_cerrar_carrito_img.setAttribute('id','cerrar');
 		boton_actualizar_carrito_img.setAttribute('src',boton_actualizar_img);
 		boton_actualizar_carrito_img.setAttribute('alt','actualizar');
 		boton_actualizar_carrito_img.setAttribute('id','actualizar');
-		boton_comprar_carrito_img.setAttribute('src',boton_adelante_img);
+		/*boton_comprar_carrito_img.setAttribute('src',boton_adelante_img);
 		boton_comprar_carrito_img.setAttribute('alt','siguiente');
-		boton_comprar_carrito_img.setAttribute('id','realizar_compra');
+		boton_comprar_carrito_img.setAttribute('id','realizar_compra');*/
 		botonera_carrito_div.setAttribute('id','botonera_carrito_div');
 		boton_comprar_carrito_a.setAttribute('id', "comprarPaso2");
+		boton_comprar_carrito_a.setAttribute('title', "Efectuar Compra");
 		
 		boton_cerrar_carrito_img.onclick = carrito;
 		boton_actualizar_carrito_img.onclick = carrito;
@@ -493,8 +507,8 @@ function carrito() {
 		
 		botonera_carrito_div.appendChild(boton_comprar_carrito_span);
 		boton_comprar_carrito_span.appendChild(boton_comprar_carrito_a);
-		boton_comprar_carrito_a.appendChild(boton_comprar_carrito_img);
-		boton_comprar_carrito_a.appendChild(boton_comprar_carrito_p_txt);
+		//boton_comprar_carrito_a.appendChild(boton_comprar_carrito_img);
+		//boton_comprar_carrito_a.appendChild(boton_comprar_carrito_p_txt);
 		
 	}else if (disco_id2=='actualizar') {
 		/*

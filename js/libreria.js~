@@ -32,7 +32,7 @@ objetoConDomsAnteriores
 );
  
 */
-function cDom(etiquetas, elementFromPush_){ 
+function cDom(etiquetas, elementFromPush_){ //Recive arguments
 //Entran etiquetas salen DOMs (Elementos de html)
 
 	var doms = {};
@@ -42,7 +42,7 @@ function cDom(etiquetas, elementFromPush_){
 		var objetoId = etiquetas[i].objetoId;
 		
 		doms[objetoId] = document.createElement( etiquetas[i].etiqueta );
-		
+//Todos estos if se pueden reemplazar con arguments
 		if(etiquetas[i].id) doms[objetoId].setAttribute('id',etiquetas[i].id);
 		if(etiquetas[i].class) doms[objetoId].setAttribute('class',etiquetas[i].class);
 		if(etiquetas[i].name) doms[objetoId].setAttribute('name',etiquetas[i].name);
@@ -66,7 +66,7 @@ function cDom(etiquetas, elementFromPush_){
 			var texto = document.createTextNode(etiquetas[i].texto);
 			
 			//Segun el orden, el texto quedara a la DERECHA o a la IZQUIERDA del elemento
-			//en caso de usar doms[objetoId].childNodes[0] tambien se altera la posicion
+			//en caso de usar doms[objetoId].childNodes[0] tambien se altera la posicion en este caso el texto esta en posicion 0
 			
 			etiquetaLabel.appendChild(texto);
 			etiquetaLabel.appendChild(doms[objetoId]);

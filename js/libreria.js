@@ -1,12 +1,14 @@
 /*
 Crear Dom con seteos
 ====================
+//Retorno : obj.dom
+
 *** Errores conocidos: 
 	- No esta especificado el caso de <input type='radius' />
 	- Dificil acceso a los value de los input
-	- 
+	- Floja documentacion
 
-Los unicos parametros fuera de los estandares son, "objetoId"  "etiqueta" y "list"
+Los unicos parametros fuera de los estandares son, "objetoId"  "etiqueta"  "list" y "texto"
 
 *** Ejemplo de modo de uso 1:
 
@@ -32,7 +34,7 @@ objetoConDomsAnteriores
 );
  
 */
-function cDom(etiquetas, elementFromPush_){ 
+function cDom(etiquetas, elementFromPush_){ //Recive arguments
 //Entran etiquetas salen DOMs (Elementos de html)
 
 	var doms = {};
@@ -42,18 +44,21 @@ function cDom(etiquetas, elementFromPush_){
 		var objetoId = etiquetas[i].objetoId;
 		
 		doms[objetoId] = document.createElement( etiquetas[i].etiqueta );
-		
+//Todos estos if se pueden reemplazar con arguments
 		if(etiquetas[i].id) doms[objetoId].setAttribute('id',etiquetas[i].id);
 		if(etiquetas[i].class) doms[objetoId].setAttribute('class',etiquetas[i].class);
 		if(etiquetas[i].name) doms[objetoId].setAttribute('name',etiquetas[i].name);
+		if(etiquetas[i].title) doms[objetoId].setAttribute('title',etiquetas[i].title);
 		if(etiquetas[i].value) doms[objetoId].setAttribute('value',etiquetas[i].value);
 		if(etiquetas[i].src) doms[objetoId].setAttribute('src',etiquetas[i].src);
+		if(etiquetas[i].href) doms[objetoId].setAttribute('href',etiquetas[i].href);
 		if(etiquetas[i].alt) doms[objetoId].setAttribute('alt',etiquetas[i].alt);
 		if(etiquetas[i].method) doms[objetoId].setAttribute('method',etiquetas[i].method);
 		if(etiquetas[i].action) doms[objetoId].setAttribute('action',etiquetas[i].action);
 		if(etiquetas[i].for) doms[objetoId].setAttribute('for',etiquetas[i].for);
 		if(etiquetas[i].cols) doms[objetoId].setAttribute('cols',etiquetas[i].cols);
 		if(etiquetas[i].rows) doms[objetoId].setAttribute('rows',etiquetas[i].rows);
+		if(etiquetas[i].disabled) doms[objetoId].setAttribute('disabled',etiquetas[i].disabled);
 		
 		if(etiquetas[i].type && etiquetas[i].etiqueta == 'input' ) doms[objetoId].setAttribute('type',etiquetas[i].type);
 		
