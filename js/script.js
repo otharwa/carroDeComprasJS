@@ -141,14 +141,14 @@ function realizar_compra() {
 		{objetoId:'titulo', etiqueta:'p', texto:'Datos de Entrega'},
 		{objetoId:'tilde', etiqueta:'input', type:'checkbox', name:'tilde', id:'tilde', texto:'¿Los mismos datos que el contacto?'},
 		{objetoId:'fieldset', etiqueta:'fieldset'},
-		{objetoId:'nombre', etiqueta:'input', type:'text', name:'nombre2', id:'nombre2', texto:'Nombre'},
-		{objetoId:'apellido', etiqueta:'input', type:'text', name:'apellido2', id:'apellido2', texto:'Apellido'},
-		{objetoId:'ciudad', etiqueta:'input', type:'text', name:'ciudad2', id:'ciudad2', texto:'Ciudad'},
-		{objetoId:'provincia', etiqueta:'input', type:'text', name:'provincia2', id:'provincia2', texto:'Provincia'},
+		{objetoId:'nombre', etiqueta:'input', type:'text', name:'nombre2', id:'nombre2', texto:'Nombre', tipoComprobacion:'texto'},
+		{objetoId:'apellido', etiqueta:'input', type:'text', name:'apellido2', id:'apellido2', texto:'Apellido', tipoComprobacion:'texto'},
+		{objetoId:'ciudad', etiqueta:'input', type:'text', name:'ciudad2', id:'ciudad2', texto:'Ciudad', tipoComprobacion:'texto'},
+		{objetoId:'provincia', etiqueta:'input', type:'text', name:'provincia2', id:'provincia2', texto:'Provincia', tipoComprobacion:'texto'},
 		{objetoId:'pais', etiqueta:'select', name:'pais1', id:'pais2', texto:'Pais', list:['Argentina','Chile','Uruguay','Otro']},
-		{objetoId:'direccion', etiqueta:'textarea', name:'direccion2', id:'nombre2', texto:'Direccion', rows:'2', cols:'20'},
-		{objetoId:'cp', etiqueta:'input', type:'text', name:'cp2', id:'cp2', texto:'CodigoPostal'},
-		{objetoId:'telefono', etiqueta:'input', type:'text', name:'telefono2', id:'telefono2', texto:'Telefono'},
+		{objetoId:'direccion', etiqueta:'textarea', name:'direccion2', id:'nombre2', texto:'Direccion', rows:'2', cols:'20', tipoComprobacion:'texto'},
+		{objetoId:'cp', etiqueta:'input', type:'text', name:'cp2', id:'cp2', texto:'CodigoPostal', tipoComprobacion:'cp'},
+		{objetoId:'telefono', etiqueta:'input', type:'text', name:'telefono2', id:'telefono2', texto:'Telefono', tipoComprobacion:'tel'},
 		{objetoId:'email', etiqueta:'input', type:'text', name:'email2', id:'email2', texto:'E-Mail', tipoComprobacion:'email'}
 	]);
 	
@@ -221,23 +221,20 @@ function realizar_compra() {
 				if(tipoDato == undefined) return false;
 				
 				switch(tipoDato){
-					case 'texto':
-						 var check = /[a-zA-Z\á\é\í\ó\ú]*$/;
-					break;
-					case 'cp':
-						var check = /^[0-9]{4}$/;
-					break;
-					case 'tel':
-						var check = /^[\d]*(S\/N)?$/;
-					break;
-					case 'email':
-						var check = /^[\w\-\_\.]{3}[a-z0-9A-Z\-\_\.]*[@][\w]{3}[\w\-\_\.]*[\.]?[\w]{2,4}$/;
-					break;
+					case 'texto': var check = /[a-zA-Z\á\é\í\ó\ú]*/; 
+						break;
+					case 'cp': check = /^[0-9]{4}$/; 
+						break;
+					case 'tel':	check = /^[\d]*(S\/N)?$/;
+						break;
+					case 'email': check = /^[\w\-\_\.]{3}[a-z0-9A-Z\-\_\.]*[@][\w]{3}[\w\-\_\.]*[\.]?[\w]{2,4}$/;
+						break;
 				}
 				
 				if(! check.test( this_.value ) )
 					var erno = priv.mostrarError(this_.parentNode, "campo invalido");
-				else this_.parentNode.style.border = "none"; 
+				else 
+					this_.parentNode.style.border = "none"; 
 			},
 			visualizar:function(){
 				var form = gEID('detalleCompra').getElementsByTagName('form')[0];
@@ -311,8 +308,8 @@ function realizar_compra() {
 						var tipo = formulario2[obj].childNodes[1].getAttribute('type');
 						formulario2[obj].onchange = function(){ priv.validar(this_, tipo); }
 					}	}
-				formulario2.email.tipoComprobacion = 'email';
-				console.log(formulario2.email.tipoComprobacion);
+				//formulario2.email.tipoComprobacion = 'email';
+				//console.log(formulario2.email.tipoComprobacion);
 				
 				domStyle([formulario2.fieldset, formulario1.fieldset ],{
 					padding: "5px",
