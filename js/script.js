@@ -141,22 +141,22 @@ function realizar_compra() {
 		{objetoId:'titulo', etiqueta:'p', texto:'Datos de Entrega'},
 		{objetoId:'tilde', etiqueta:'input', type:'checkbox', name:'tilde', id:'tilde', texto:'¿Los mismos datos que el contacto?'},
 		{objetoId:'fieldset', etiqueta:'fieldset'},
-		{objetoId:'nombre', etiqueta:'input', type:'text', name:'nombre2', id:'nombre2', texto:'Nombre', valid: 'texto'},
-		{objetoId:'apellido', etiqueta:'input', type:'text', name:'apellido2', id:'apellido2', texto:'Apellido', valid: 'texto'},
-		{objetoId:'ciudad', etiqueta:'input', type:'text', name:'ciudad2', id:'ciudad2', texto:'Ciudad', valid: 'texto'},
-		{objetoId:'provincia', etiqueta:'input', type:'text', name:'provincia2', id:'provincia2', texto:'Provincia', valid: 'texto'},
+		{objetoId:'nombre', etiqueta:'input', type:'text', name:'nombre2', id:'nombre2', texto:'Nombre', 'data-valid': 'texto'},
+		{objetoId:'apellido', etiqueta:'input', type:'text', name:'apellido2', id:'apellido2', texto:'Apellido', 'data-valid': 'texto'},
+		{objetoId:'ciudad', etiqueta:'input', type:'text', name:'ciudad2', id:'ciudad2', texto:'Ciudad', 'data-valid': 'texto'},
+		{objetoId:'provincia', etiqueta:'input', type:'text', name:'provincia2', id:'provincia2', texto:'Provincia', 'data-valid': 'texto'},
 		{objetoId:'pais', etiqueta:'select', name:'pais1', id:'pais2', texto:'Pais', list:['Argentina','Chile','Uruguay','Otro']},
-		{objetoId:'direccion', etiqueta:'textarea', name:'direccion2', id:'nombre2', texto:'Direccion', rows:'2', cols:'20', valid: 'texto'},
-		{objetoId:'cp', etiqueta:'input', type:'text', name:'cp2', id:'cp2', texto:'CodigoPostal', valid: 'cp'},
-		{objetoId:'telefono', etiqueta:'input', type:'text', name:'telefono2', id:'telefono2', texto:'Telefono', valid: 'tel'},
-		{objetoId:'email', etiqueta:'input', type:'text', name:'email2', id:'email2', texto:'E-Mail', valid: 'email'}
+		{objetoId:'direccion', etiqueta:'textarea', name:'direccion2', id:'nombre2', texto:'Direccion', rows:'2', cols:'20', 'data-valid': 'texto'},
+		{objetoId:'cp', etiqueta:'input', type:'text', name:'cp2', id:'cp2', texto:'CodigoPostal', 'data-valid': 'cp'},
+		{objetoId:'telefono', etiqueta:'input', type:'text', name:'telefono2', id:'telefono2', texto:'Telefono', 'data-valid': 'tel'},
+		{objetoId:'email', etiqueta:'input', type:'text', name:'email2', id:'email2', texto:'E-Mail', 'data-valid': 'email'}
 	]);
 	
 	var botonSiguiente = cDom([
 		{objetoId:'botonSiguiente', etiqueta:'input', type:'submit', value:'Siguiente'}
 	]);
 
-//Los nombres de los campos requeridos, deben coincidir con los nombres de los objetos formulario
+//Los nombres de los campos requeridos, deben coincidir con los nombres de los objetos formulario ( objetoId )
 	var camposRequeridos = {
 		nombre:'texto',
 		apellido:'texto',
@@ -218,10 +218,11 @@ function realizar_compra() {
 			},
 			validar:function(this_ , tipoDato){
 				
-				if(tipoDato == undefined) return false;
-				var check = /false/;
+				if( ! isNaN(tipoDato) ) return false;
+				if( ! isNaN(this_) ) return false;
+
 				switch(tipoDato){
-					case 'texto': check = /[a-zA-Z\á\é\í\ó\ú\ ]*/; 
+					case 'texto': check = /[a-zA-Z\á\é\í\ó\ú\ ]?/; 
 						break;
 					case 'cp': check = /^[0-9]{4}$/; 
 						break;
@@ -230,7 +231,6 @@ function realizar_compra() {
 					case 'email': check = /^[\w\-\_\.]{3}[a-z0-9A-Z\-\_\.]*[@][\w]{3}[\w\-\_\.]*[\.]?[\w]{2,4}$/;
 						break;
 				}
-				
 				if(! check.test( this_.value ) )
 					var erno = priv.mostrarError(this_.parentNode, "campo invalido");
 				else 
@@ -308,8 +308,6 @@ function realizar_compra() {
 						var tipo = formulario2[obj].childNodes[1].getAttribute('type');
 						formulario2[obj].onchange = function(){ priv.validar(this_, tipo); }*/
 					}	}
-				//formulario2.email.tipoComprobacion = 'email';
-				//console.log(formulario2.email.tipoComprobacion);
 				
 				domStyle([formulario2.fieldset, formulario1.fieldset ],{
 					padding: "5px",
@@ -333,14 +331,16 @@ function realizar_compra() {
 					
 					var campo1 = formulario1[campo].childNodes[1];
 					var campo2 = formulario2[campo].childNodes[1];
+					//console.log(campo);
 					if(formulario1[campo]) 
-						campo1.onchange = function(){ regla = this.getAttribute('valid'); priv.validar(this,regla ); };
+						campo1.onchange = function(){ regla = this.getAttribute('data-valid'); priv.validar(this,regla ); };
 					if(formulario2[campo]) 
-						campo2.onchange = function(){ regla = this.getAttribute('valid'); priv.validar(this,regla ); };
+						campo2.onchange = function(){ regla = this.getAttribute('data-valid'); priv.validar(this, regla ); };
 					//bug: siempre se aplica el ultimo item de "camposRequeridos" (en este caso email) a todos los elementos que llamen esta funcion
 				}
 			}
 		};
+
 		var pub = {
 			crear:function(){priv.crear()},
 			visualizar:function(){priv.visualizar()},

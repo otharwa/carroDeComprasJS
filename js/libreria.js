@@ -50,7 +50,7 @@ function cDom(etiquetas, elementFromPush_){ //Recive arguments
 			switch(atributo){
 				case 'objetoId': break;
 				case 'etiqueta': break;
-				case 'name': break;
+				//case 'name': break;
 				case 'list': 
 					if(etiquetas[i].etiqueta == 'select' && doms[objetoId].nodeName == 'LABEL'){
 						for(var j=0; j < etiquetas[i].list.length; j++){
@@ -83,7 +83,11 @@ function cDom(etiquetas, elementFromPush_){ //Recive arguments
 					}
 					break;
 				default:
-					doms[objetoId].setAttribute(atributo, etiquetas[i][atributo]);
+					if( doms[objetoId].nodeName == 'LABEL' )
+						doms[objetoId].childNodes[1].setAttribute(atributo, etiquetas[i][atributo]);
+					else
+						doms[objetoId].setAttribute(atributo, etiquetas[i][atributo]);
+
 					break;
 			}
 			
