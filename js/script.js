@@ -60,7 +60,7 @@ function realizar_compra() {
 	var pasosRestantes = function(estado){
 		//Uso : pasosRestantes(n);
 		//Valores recividos : int > 0
-		//Valores almacenados en : var estaro
+		//Valores almacenados en : var estado
 		//Retorno :  objeto DOM para ser insertado donde corresponda
 
 		var priv = {
@@ -90,6 +90,12 @@ function realizar_compra() {
 				priv.div.appendChild(boton.divBotones);
 
 //Indicativos de pasos
+				var contentRestantes = cDom({
+					{objetoId:'div', etiqueta: 'div', id: 'pasosRest'},
+					{objetoId:'ulNumeros', etiqueta: 'ul', id: 'numeros'},
+					{objetoId:'ulTextos', etiqueta: 'ul', id: 'textos'}
+				});
+				var divConten = cE('div');
 				var ul = cE('ul');
 				priv.div.appendChild(ul);
 				

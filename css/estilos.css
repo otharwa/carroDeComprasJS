@@ -106,6 +106,68 @@ a#comprarPaso3:hover { background: url('../img/iconos/arrows.png') no-repeat -3p
 /*#pasosRestantes hr {background-color:white;}*/
 #pasosRestantes .aqui > .num {background-color:black; border-color:white; color:white;}
 
+div#pasosRest,
+div#pasosRest::after,
+div#pasosRest::before { clear: both; content: ''; margin: 0; padding: 0; }
+#numeros { 
+  background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAgMAAABnCAYAAACdIUEyAAAEdUlEQVR4Xu3WsRHAIAwEQan/ooGALm494wK0fHA7M+f9PgIECBAgQCAqsGIg+vLOJkCAAAECX0AMmAIBAgQIEIgLiIH4AJxPgAABAgTEgA0QIECAAIG4gBiID8D5BAgQIEBADNgAAQIECBCIC4iB+ACcT4AAAQIExIANECBAgACBuIAYiA/A+QQIECBAQAzYAAECBAgQiAuIgfgAnE+AAAECBMSADRAgQIAAgbiAGIgPwPkECBAgQEAM2AABAgQIEIgLiIH4AJxPgAABAgTEgA0QIECAAIG4gBiID8D5BAgQIEBADNgAAQIECBCIC4iB+ACcT4AAAQIExIANECBAgACBuIAYiA/A+QQIECBAQAzYAAECBAgQiAuIgfgAnE+AAAECBMSADRAgQIAAgbiAGIgPwPkECBAgQEAM2AABAgQIEIgLiIH4AJxPgAABAgTEgA0QIECAAIG4gBiID8D5BAgQIEBADNgAAQIECBCIC4iB+ACcT4AAAQIExIANECBAgACBuIAYiA/A+QQIECBAQAzYAAECBAgQiAuIgfgAnE+AAAECBMSADRAgQIAAgbiAGIgPwPkECBAgQEAM2AABAgQIEIgLiIH4AJxPgAABAgTEgA0QIECAAIG4gBiID8D5BAgQIEBADNgAAQIECBCIC4iB+ACcT4AAAQIExIANECBAgACBuIAYiA/A+QQIECBAQAzYAAECBAgQiAuIgfgAnE+AAAECBMSADRAgQIAAgbiAGIgPwPkECBAgQEAM2AABAgQIEIgLiIH4AJxPgAABAgTEgA0QIECAAIG4gBiID8D5BAgQIEBADNgAAQIECBCIC4iB+ACcT4AAAQIExIANECBAgACBuIAYiA/A+QQIECBAQAzYAAECBAgQiAuIgfgAnE+AAAECBMSADRAgQIAAgbiAGIgPwPkECBAgQEAM2AABAgQIEIgLiIH4AJxPgAABAgTEgA0QIECAAIG4gBiID8D5BAgQIEBADNgAAQIECBCIC4iB+ACcT4AAAQIExIANECBAgACBuIAYiA/A+QQIECBAQAzYAAECBAgQiAuIgfgAnE+AAAECBMSADRAgQIAAgbiAGIgPwPkECBAgQEAM2AABAgQIEIgLiIH4AJxPgAABAgTEgA0QIECAAIG4gBiID8D5BAgQIEBADNgAAQIECBCIC4iB+ACcT4AAAQIExIANECBAgACBuIAYiA/A+QQIECBAQAzYAAECBAgQiAuIgfgAnE+AAAECBMSADRAgQIAAgbiAGIgPwPkECBAgQEAM2AABAgQIEIgLiIH4AJxPgAABAgTEgA0QIECAAIG4gBiID8D5BAgQIEBADNgAAQIECBCIC4iB+ACcT4AAAQIExIANECBAgACBuIAYiA/A+QQIECBAQAzYAAECBAgQiAuIgfgAnE+AAAECBMSADRAgQIAAgbiAGIgPwPkECBAgQEAM2AABAgQIEIgLiIH4AJxPgAABAgTEgA0QIECAAIG4gBiID8D5BAgQIEBADNgAAQIECBCIC1x+DGcB3y32JQAAAABJRU5ErkJggg==');
+  background-repeat: repeat-x;
+  background-size: 10px;
+  position: relative;
+  background-position: 18%;
+  display: block;
+  float:left;
+  margin: 0;
+  padding: 0;
+  width: 300px;
+  text-align: center;
+}
+#numeros,
+#numeros::after,
+#numeros::before { clear: both; }
+#numeros li { 
+  display: inline-block;
+  background-color: white;
+  color: black;
+  border: 1px solid black;
+  border-radius: 50%;
+  width: 25px;
+  height: 25px;
+  padding: 0;
+  margin: 0 10px;
+}
+#numeros li::before { text-align: center; display: block;  font-size: 20px; }
+#numeros li._1::before { content: '1'; }
+#numeros li._2::before { content: '2'; }
+#numeros li._3::before { content: '3'; }
+#numeros li._4::before { content: '4'; }
+#numeros li._5::before { content: '5'; }
+
+#textos {
+  position: relative;
+  display: block;
+  float: left;
+  width: 300px;
+  text-align: center;
+}
+#textos,
+#textos::after,
+#textos::before {
+  clear: both;
+  content: '';
+  margin: 0;
+  padding: 0;
+}
+#textos li {
+  background-color: red;
+  display: inline-block;
+  text-align: center;
+  width: 45px;
+  margin: 0;
+  padding: 0;
+}
+
+
 /*5hs
 reescalar imagenes de forma masiva
 convert -resize 200 ./* ./mini/
