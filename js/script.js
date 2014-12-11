@@ -57,7 +57,8 @@ function realizar_compra() {
 	//detComp.removeChild( detComp.getElementsByTagName('table')[0] );
 	//detComp.removeChild( detComp.getElementById('botonera_carrito_div') );
 	
-	var pasosRestantes = function(estado){
+	//generador automatico de pasos
+	function pasosRestantes(estado){
 		//Uso : pasosRestantes(n);
 		//Valores recividos : int > 0
 		//Valores almacenados en : var estado
@@ -90,36 +91,36 @@ function realizar_compra() {
 				priv.div.appendChild(boton.divBotones);
 
 //Indicativos de pasos
-				var contentRestantes = cDom({
-					{objetoId:'div', etiqueta: 'div', id: 'pasosRest'},
-					{objetoId:'ulNumeros', etiqueta: 'ul', id: 'numeros'},
-					{objetoId:'ulTextos', etiqueta: 'ul', id: 'textos'}
-				});
-				var divConten = cE('div');
-				var ul = cE('ul');
-				priv.div.appendChild(ul);
-				
-				for(var i=0; i< priv.pasos.length ; i++){
-					priv.dom[i] = cE('li');
-					var p = cE('p');
-					p.setAttribute('class','num');
-					var p2 = cE('p');
-					var numero = document.createTextNode(i+1);
-					var texto = document.createTextNode(priv.pasos[i]);
+				var restantesDOM = cDom([
+					{objetoId:'div', etiqueta:'div', id:'pasosRest'},
+					{objetoId:'ulNumeros', etiqueta:'ul', id:'numeros'}
+				]);
+
+				restantesDOM.div.appendChild(restantesDOM.ulNumeros);
+				priv.div.appendChild(restantesDOM.div);
+
+//levanta datos desde el array priv.pasos
+				for(var i=1; i<= priv.pasos.length ; i++){
+
+					Li = cE('li');
+					Num = cE('b');
+					Txt = cE('span');
+
+					var numero = document.createTextNode(i);
+					var texto = document.createTextNode(priv.pasos[i-1]);
 										
-					if(i == estado) priv.dom[i].setAttribute('class','aqui');
+					if(i == estado) Num.setAttribute('class','aqui');
 					
-					ul.appendChild(priv.dom[i]);
-					priv.dom[i].appendChild(p);
-					priv.dom[i].appendChild(p2);
-					
-					p.appendChild(numero);
-					p2.appendChild(texto);
+					Num.appendChild(numero);
+					Txt.appendChild(texto);
+
+					Li.appendChild(Num);
+					Li.appendChild(Txt);
+
+					restantesDOM.ulNumeros.appendChild(Li);
 				}
 			}
 		};
-		
-
 		priv.cambiarA(estado);
 		
 		return priv.div;
@@ -253,7 +254,7 @@ function realizar_compra() {
 						form.appendChild(priv.formulariosCompletosDOM[i]);
 				}
 				
-				var pasos = pasosRestantes(2);
+				var pasos = pasosRestantes(3); 
 				form.appendChild(pasos);
 			},
 			crear:function(){
@@ -342,7 +343,6 @@ function realizar_compra() {
 						campo1.onchange = function(){ regla = this.getAttribute('data-valid'); priv.validar(this,regla ); };
 					if(formulario2[campo]) 
 						campo2.onchange = function(){ regla = this.getAttribute('data-valid'); priv.validar(this, regla ); };
-					//bug: siempre se aplica el ultimo item de "camposRequeridos" (en este caso email) a todos los elementos que llamen esta funcion
 				}
 			}
 		};
@@ -361,7 +361,7 @@ function realizar_compra() {
 }
 
 
-function carrito() {
+function carrito() { //Paso 1
 	
 	//Esta es la parte dinamica del carro de compras, donde el usuario puede ver y modificar sus acciones
 	
