@@ -7,7 +7,6 @@ Crear Dom con seteos
 	- No esta especificado el caso de <input type='radius' />
 	- Dificil acceso a los value de los input
 	- Floja documentacion
-	- Es obsoleto a la hora de incorporar atributos nuevos no-conocidas (e.j: data-rol, canonical, etc) //implentar arguments
 
 Los unicos parametros fuera de los estandares son, "objetoId"  "etiqueta"  "list" y "texto"
 
@@ -22,8 +21,6 @@ var elemnt = cDom(
 ]
 );
 
-elemnt.contenedorGeneral.onclick = function(){alert('Hola Mundo')}
-
 **** Ejemplo de modo de uso 2: Se pueden empujar los elementos a un objeto ya existente especificandolo en el segundo parametro
 
 cDom(
@@ -35,7 +32,7 @@ objetoConDomsAnteriores
 );
  
 */
-function cDom(etiquetas, elementFromPush_){ //Recive arguments
+function cDom(etiquetas, elementFromPush_){
 //Entran etiquetas salen DOMs (Elementos de html)
 
 	var doms = {};

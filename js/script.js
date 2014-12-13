@@ -47,6 +47,83 @@ ToDo
 	codigo feo y asqueroso, cuando lo empeze a escribir no conosia POO y no almacenaba los objetos en arrays
 */
 
+
+
+//generador automatico de pasos
+function navegacion(posActual){
+	//Uso : navegacion(n);
+	//Valores recividos : int > 0
+	//Valores almacenados en : var estado
+	//Retorno :  objeto DOM para ser insertado donde corresponda
+		var priv = {
+		pasos:[
+			{nombre: 'Estado', funcion: function(){ carrito(true); } },
+			{nombre: 'Datos de Compra', funcion: function(){ realizar_compra(); } },
+			{nombre: 'Finalizado!', funcion: function(){ carrito(true); } }
+		],
+		dom:[],
+		div:false,
+		cambiarA:function(posActual){
+			
+			if(! (posActual >= 0)) { posActual = 0; }
+				if( posActual == 0 ){ 
+				posAnt = 0; 
+				posSig = 1; }
+			else if( posActual >= ( priv.pasos.length - 1 ) ){ 
+				posAnt = posActual - 1; 
+				posSig = posActual; }
+			else {
+				posAnt = posActual-1; 
+				posSig = posActual+1; }
+				
+				priv.div = cE('div');
+			priv.div.setAttribute('id','pasosRestantes');
+//Botones Atras y Siguiente
+			funcAnt = priv.pasos[posAnt].funcion ;
+			posSig = priv.pasos[posSig].funcion ;
+			var botones = cDom([
+				{objetoId:'aAtras', etiqueta: 'a', href: '#', class: "atras", title: 'Paso Anterior', onclick: funcAnt },
+				{objetoId:'aSiguiente', etiqueta: 'a', href: '#', class: "siguiente", title: 'Paso Siguiente', onclick: posSig },
+				{objetoId:'div', etiqueta: 'div'}
+			]);
+			botones.div.appendChild(botones.aAtras);
+			botones.div.appendChild(botones.aSiguiente);
+			priv.div.appendChild(botones.div);
+
+//Indicativos de pasos
+			var restantesDOM = cDom([
+				{objetoId:'div', etiqueta:'div', id:'pasosRest'},
+				{objetoId:'ulNumeros', etiqueta:'ul', id:'numeros'}
+			]);
+			restantesDOM.div.appendChild(restantesDOM.ulNumeros);
+			priv.div.appendChild(restantesDOM.div);
+
+//levanta datos desde el array priv.pasos
+			for(var i=1; i<= priv.pasos.length ; i++){
+				Li = cE('li');
+				Num = cE('b');
+				Txt = cE('span');
+				var numero = document.createTextNode(i);
+				var texto = document.createTextNode(priv.pasos[i-1].nombre);
+									
+				if(i == posActual) Num.setAttribute('class','aqui');
+				
+				Num.appendChild(numero);
+				Txt.appendChild(texto);
+				Li.appendChild(Num);
+				Li.appendChild(Txt);
+				restantesDOM.ulNumeros.appendChild(Li);
+			}
+		}
+	};
+	priv.cambiarA(posActual);
+	
+	return priv.div;
+}//fin - function navegacion
+
+
+
+
 function realizar_compra() {
 	//esta funcion carga el paso 2 de la compra.... luego de que el usuario apreto el boton "efectuar compra"
 	//Aqui se carga el CheckOut
@@ -57,76 +134,7 @@ function realizar_compra() {
 	//detComp.removeChild( detComp.getElementsByTagName('table')[0] );
 	//detComp.removeChild( detComp.getElementById('botonera_carrito_div') );
 	
-	//generador automatico de pasos
-	function pasosRestantes(estado){
-		//Uso : pasosRestantes(n);
-		//Valores recividos : int > 0
-		//Valores almacenados en : var estado
-		//Retorno :  objeto DOM para ser insertado donde corresponda
 
-		var priv = {
-			pasos:['Estado','Detalle de Compra','Datos de Compra','Finalizado!!'],
-			dom:[],
-			div:false,
-			cambiarA:function(estado){
-				
-				if(! (estado >= 0)) { console.log('Ingrese num >= 0') ; return false;}
-
-				priv.div = cE('div');
-				priv.div.setAttribute('id','pasosRestantes');
-//Botones Atras y Siguiente
-				var boton = cDom([
-					/*{objetoId:'imgAtras', etiqueta:'img', src: boton_atras_img, alt:'atras'},
-					{objetoId:'imgSiguiente', etiqueta:'img', src: boton_adelante_img, alt:'siguiente'},*/
-					{objetoId:'aAtras', etiqueta: 'a', href: '#', id: 'comprarPaso3', title: 'Paso Anterior'},
-					{objetoId:'aSiguiente', etiqueta: 'a', href: '#', id: 'comprarPaso2', title: 'Paso Siguiente' },
-					{objetoId:'divBotones', etiqueta: 'div'}
-				]);
-
-				//boton.aAtras.appendChild(boton.imgAtras);
-				//boton.aSiguiente.appendChild(boton.imgSiguiente);
-				boton.divBotones.appendChild(boton.aAtras);
-				boton.divBotones.appendChild(boton.aSiguiente);
-
-				priv.div.appendChild(boton.divBotones);
-
-//Indicativos de pasos
-				var restantesDOM = cDom([
-					{objetoId:'div', etiqueta:'div', id:'pasosRest'},
-					{objetoId:'ulNumeros', etiqueta:'ul', id:'numeros'}
-				]);
-
-				restantesDOM.div.appendChild(restantesDOM.ulNumeros);
-				priv.div.appendChild(restantesDOM.div);
-
-//levanta datos desde el array priv.pasos
-				for(var i=1; i<= priv.pasos.length ; i++){
-
-					Li = cE('li');
-					Num = cE('b');
-					Txt = cE('span');
-
-					var numero = document.createTextNode(i);
-					var texto = document.createTextNode(priv.pasos[i-1]);
-										
-					if(i == estado) Num.setAttribute('class','aqui');
-					
-					Num.appendChild(numero);
-					Txt.appendChild(texto);
-
-					Li.appendChild(Num);
-					Li.appendChild(Txt);
-
-					restantesDOM.ulNumeros.appendChild(Li);
-				}
-			}
-		};
-		priv.cambiarA(estado);
-		
-		return priv.div;
-		//se puede hacer que return{cambiarA:funtion(numero){priv.cambiarA(numero)},crear:priv.crear()}
-		//para alivianar recursos de procesamiento
-	}
 //Crear DOMs del formulario
 	var formulario1 = cDom([
 		{objetoId:'div', etiqueta:'div',},
@@ -254,7 +262,7 @@ function realizar_compra() {
 						form.appendChild(priv.formulariosCompletosDOM[i]);
 				}
 				
-				var pasos = pasosRestantes(3); 
+				var pasos = navegacion(2); 
 				form.appendChild(pasos);
 			},
 			crear:function(){
@@ -361,8 +369,7 @@ function realizar_compra() {
 }
 
 
-function carrito() { //Paso 1
-	
+function carrito( abrir ) { //Paso 1
 	//Esta es la parte dinamica del carro de compras, donde el usuario puede ver y modificar sus acciones
 	
 	//colocar etiqueta form porque estoy usando input
@@ -382,7 +389,7 @@ function carrito() { //Paso 1
 	var detalleCompra = gEID('detalleCompra');
 	var disco_id2 = this.getAttribute('id');
 	
-	if (disco_id2=='abrir') {
+	if (disco_id2=='abrir' || abrir == true ) {
 		
 		if (detalleCompra!=undefined) caja.removeChild(detalleCompra);
 		
@@ -494,7 +501,7 @@ function carrito() { //Paso 1
 		boton_comprar_carrito_img.setAttribute('alt','siguiente');
 		boton_comprar_carrito_img.setAttribute('id','realizar_compra');*/
 		botonera_carrito_div.setAttribute('id','botonera_carrito_div');
-		boton_comprar_carrito_a.setAttribute('id', "comprarPaso2");
+		boton_comprar_carrito_a.setAttribute('class', "siguiente");
 		boton_comprar_carrito_a.setAttribute('title', "Efectuar Compra");
 		
 		boton_cerrar_carrito_img.onclick = carrito;

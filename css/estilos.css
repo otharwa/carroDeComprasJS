@@ -80,19 +80,21 @@ body {background-repeat: repeat; /*background-color: rgb(253,112,0);*/ backgroun
 #botonera_carrito_div span {margin:0 35px;}
 #botonera_carrito_div span p { display: inline-block; width: 100px;}
 
-a#comprarPaso2 { display: inline-block; width: 70px; font-size: 12px; background: url('../img/iconos/arrows.png') no-repeat -35px -6px;
+div > a.atras { display: inline-block; width: 70px; font-size: 12px; margin-right: 80px; background: url('../img/iconos/arrows.png') no-repeat -3px -6px;
 	background-size: 67px 59px;
 	width: 26px;
 	height: 19px;}
-a#comprarPaso2:hover { background: url('../img/iconos/arrows.png') no-repeat -35px -35px;
+div > a.atras:hover { background: url('../img/iconos/arrows.png') no-repeat -3px -35px;
 	background-size: 67px 59px;
 	width: 26px;
 	height: 19px;}
-a#comprarPaso3 { display: inline-block; width: 70px; font-size: 12px; margin-right: 80px; background: url('../img/iconos/arrows.png') no-repeat -3px -6px;
+div > a.siguiente,
+span > a.siguiente { display: inline-block; width: 70px; font-size: 12px; background: url('../img/iconos/arrows.png') no-repeat -35px -6px;
 	background-size: 67px 59px;
 	width: 26px;
 	height: 19px;}
-a#comprarPaso3:hover { background: url('../img/iconos/arrows.png') no-repeat -3px -35px;
+div > a.siguiente:hover,
+span > a.siguiente:hover { background: url('../img/iconos/arrows.png') no-repeat -35px -35px;
 	background-size: 67px 59px;
 	width: 26px;
 	height: 19px;}
