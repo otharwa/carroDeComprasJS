@@ -60,7 +60,7 @@ function navegacion(posActual){
 		pasos:[
 			{nombre: 'Estado', funcion: function(){ console.log('boton sin funcion'); return false; } },
 			{nombre: 'Datos de Compra', funcion: function(){ carrito.abrir = true; carrito(); return false; } },
-			{nombre: 'Finalizado!', funcion: compra_finalizada }
+			{nombre: 'Finalizado!', funcion: function(){ compra_finalizada(); return false; } }
 		],
 		dom:[],
 		div:false,
@@ -90,8 +90,6 @@ function navegacion(posActual){
 			]);
 			botones.aAtras.onclick = priv.pasos[posAnt].funcion;
 			botones.aSiguiente.onclick = priv.pasos[posSig].funcion;
-
-			botones.aSiguiente = 
 
 			botones.div.appendChild(botones.aAtras);
 			botones.div.appendChild(botones.aSiguiente);
@@ -132,7 +130,19 @@ function navegacion(posActual){
 function compra_finalizada(){
 	form = document.getElementById('detalleCompra');
 	form = form.getElementsByTagName('form')[0];
-	form.innerHTML = "";
+
+	//borrar todo el contenido
+	form.innerHTML = " "; 
+
+	txtContn = document.createElement('div');
+	texto = document.createTextNode('Gracias por su compra');
+
+	domStyle(txtContn, {
+		padding:'40px 0'
+	});
+
+	txtContn.appendChild(texto);
+	form.appendChild(txtContn);
 
 	return false; 
 }

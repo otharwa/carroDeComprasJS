@@ -22,7 +22,7 @@ a:visited {text-decoration: none;}
 .clearfix:after {clear: both;}
 	
 html,body{min-height: 100%;}
-body {background-repeat: repeat; /*background-color: rgb(253,112,0);*/ background-image: url('../img/bg.jpg'); background-size: cover; color: whitesmoke;}
+body {background-repeat: repeat; background-image: url('../img/bg.jpg'); background-size: cover; color: whitesmoke; padding-bottom: 50px; }
 
 #encabezado { width: 100%; background-color: rgba(145,0,0,0.8); margin-top:0; margin-bottom:18px; }
 #head {width:940px;  margin:auto;  background-color: rgba(145,0,0,0.8);  box-shadow: 0 0 15px #333; border-radius:3px; font-family:verdana; height: 200px; padding: 5px 0;}
@@ -51,7 +51,7 @@ body {background-repeat: repeat; /*background-color: rgb(253,112,0);*/ backgroun
 
 #oferta_especial {background-color: rgb(240,0,0);  font-weight: bold; padding:3px; border-radius:7px;}
 
-#pie {background-color: #000; width:100%; text-align: center; padding:10px 0;} 
+#pie {background-color: #000; width:100%; text-align: center; padding:10px 0; position: fixed; bottom: 0; height: 30px;} 
 #pie p {background-color: rgb(51,51,51); padding:5px 0; width:940px; margin:auto; font-family:Verdana, Helvetica, Sans; border-radius:5px;}
 
 
