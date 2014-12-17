@@ -47,6 +47,7 @@ function cDom(etiquetas, elementFromPush_){
 			switch(atributo){
 				case 'objetoId': break;
 				case 'etiqueta': break;
+				case 'onclick': break;
 				//case 'name': break;
 				case 'list': 
 					if(etiquetas[i].etiqueta == 'select' && doms[objetoId].nodeName == 'LABEL'){

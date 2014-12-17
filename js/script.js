@@ -17,6 +17,7 @@ var pag3 = gEID('discos').getElementsByTagName('a')[3];
 pag3.onclick = function () {discografia(2); return false;}
 
 var boton_carro = gEID('boton_carro').getElementsByTagName('a')[0];
+carrito.abrir = true;
 boton_carro.onclick = carrito;
 
 function cE(elemento) {return document.createElement(elemento);}
@@ -27,7 +28,7 @@ function gEID(elemento) {return document.getElementById(elemento);}
 La construcion se fue realizando de abajo (la ultima funcion) hacia arriba (la primer funcion)
 Si algo se ve fuera de contexto al principio es porque sirve mas a bajo durante la funcion probablemente en alguna sugunda alternativa
 Administracion del tiempo:
-3hs 7 dias
+3hs 8 dias
 total: 21hs + correccion de horrores esteticos (500años de eternidad)
 */
 
@@ -53,39 +54,45 @@ ToDo
 function navegacion(posActual){
 	//Uso : navegacion(n);
 	//Valores recividos : int > 0
-	//Valores almacenados en : var estado
+	//Valores almacenados en : var posActual
 	//Retorno :  objeto DOM para ser insertado donde corresponda
-		var priv = {
+	var priv = {
 		pasos:[
-			{nombre: 'Estado', funcion: function(){ carrito(true); } },
-			{nombre: 'Datos de Compra', funcion: function(){ realizar_compra(); } },
-			{nombre: 'Finalizado!', funcion: function(){ carrito(true); } }
+			{nombre: 'Estado', funcion: function(){ console.log('boton sin funcion'); return false; } },
+			{nombre: 'Datos de Compra', funcion: function(){ carrito.abrir = true; carrito(); return false; } },
+			{nombre: 'Finalizado!', funcion: compra_finalizada }
 		],
 		dom:[],
 		div:false,
 		cambiarA:function(posActual){
 			
 			if(! (posActual >= 0)) { posActual = 0; }
-				if( posActual == 0 ){ 
+			if( posActual == 0 ){ 
 				posAnt = 0; 
-				posSig = 1; }
+				posSig = 1; 
+			}
 			else if( posActual >= ( priv.pasos.length - 1 ) ){ 
 				posAnt = posActual - 1; 
-				posSig = posActual; }
+				posSig = posActual; 
+			}
 			else {
 				posAnt = posActual-1; 
-				posSig = posActual+1; }
+				posSig = posActual+1; 
+			}
 				
-				priv.div = cE('div');
+			priv.div = cE('div');
 			priv.div.setAttribute('id','pasosRestantes');
 //Botones Atras y Siguiente
-			funcAnt = priv.pasos[posAnt].funcion ;
-			posSig = priv.pasos[posSig].funcion ;
 			var botones = cDom([
-				{objetoId:'aAtras', etiqueta: 'a', href: '#', class: "atras", title: 'Paso Anterior', onclick: funcAnt },
-				{objetoId:'aSiguiente', etiqueta: 'a', href: '#', class: "siguiente", title: 'Paso Siguiente', onclick: posSig },
+				{objetoId:'aAtras', etiqueta: 'a', href: '#', class: "atras", title: 'Paso Anterior' },
+				{objetoId:'aSiguiente', etiqueta: 'a', href: '#', class: "siguiente", title: 'Paso Siguiente' },
 				{objetoId:'div', etiqueta: 'div'}
 			]);
+			botones.aAtras.onclick = priv.pasos[posAnt].funcion;
+			botones.aSiguiente.onclick = priv.pasos[posSig].funcion;
+
+			botones.aSiguiente = 
+
 			botones.div.appendChild(botones.aAtras);
 			botones.div.appendChild(botones.aSiguiente);
 			priv.div.appendChild(botones.div);
@@ -122,6 +129,13 @@ function navegacion(posActual){
 }//fin - function navegacion
 
 
+function compra_finalizada(){
+	form = document.getElementById('detalleCompra');
+	form = form.getElementsByTagName('form')[0];
+	form.innerHTML = "";
+
+	return false; 
+}
 
 
 function realizar_compra() {
@@ -368,28 +382,28 @@ function realizar_compra() {
 	carro.visualizar();
 }
 
-
-function carrito( abrir ) { //Paso 1
+function carrito( accion ){ //Paso 1
 	//Esta es la parte dinamica del carro de compras, donde el usuario puede ver y modificar sus acciones
 	
-	//colocar etiqueta form porque estoy usando input
+	//colocar etiqueta form porque estoy usando input <--- y esto que significa ? no me voy a poner a reescribir esta funcion si ya anda
 	
-	var caja = gEID('caja');
+	var caja = gEID('caja'); //aca definitivamente no conocia el uso de objetos :( - que embole
 	var discografia = gEID('discografia');
 
-	var boton_carro =  setTimeout(
+	var boton_carroTime =  setTimeout(
 			function () {
 				var boton_carro_id =  gEID('boton_carro').getElementsByTagName('a')[0];
 				var boton_valor = boton_carro_id.getAttribute('id');	
-				if (boton_valor == 'abrir') { boton_carro_id.setAttribute('id','cerrar'); }
-				else { boton_carro_id.setAttribute('id','abrir'); }
-				clearTimeout(boton_carro);
+				if (boton_valor == 'abrir' || carrito.abrir == true ) { boton_carro_id.setAttribute('id','cerrar'); carrito.abrir = false; }
+				else { boton_carro_id.setAttribute('id','abrir'); carrito.abrir = true; }
+				clearTimeout(boton_carroTime);
 			}, 25);
 	
 	var detalleCompra = gEID('detalleCompra');
-	var disco_id2 = this.getAttribute('id');
-	
-	if (disco_id2=='abrir' || abrir == true ) {
+	//var disco_id2 = this.getAttribute('id');
+	disco_id2 = 'abrir'; 
+	//if (disco_id2=='abrir' || carrito.abrir == true ) {
+	if ( carrito.abrir == true ) {
 		
 		if (detalleCompra!=undefined) caja.removeChild(detalleCompra);
 		
@@ -450,13 +464,20 @@ function carrito( abrir ) { //Paso 1
 				elmt_input.setAttribute('id','cantidad');
 				elmt_input.setAttribute('value',discos[i].cantidad);
 				elmt_input.setAttribute('size','2');
+				elmt_input.onchange = function(){
+					idItem = this.parentNode.parentNode.getElementsByTagName('a')[0].getAttribute('id');
+					discos[idItem].cantidad = this.value;
+
+					carrito.abrir = null;
+					carrito();
+				}
 				elmt_a.setAttribute('href','#');
 				elmt_a.setAttribute('id',i);
 				elmt_a_img.setAttribute('src',boton_remover_img);
 				elmt_a_img.setAttribute('alt','remover');
 				elmt_a.onclick = function () {
+					j = this.getAttribute('id');
 					this.parentNode.parentNode.parentNode.removeChild(this.parentNode.parentNode);
-					var j = this.getAttribute('id');
 					discos[j].cantidad = 0;
 					discos[j].estado = 0;
 					return false;
@@ -505,7 +526,7 @@ function carrito( abrir ) { //Paso 1
 		boton_comprar_carrito_a.setAttribute('title', "Efectuar Compra");
 		
 		boton_cerrar_carrito_img.onclick = carrito;
-		boton_actualizar_carrito_img.onclick = carrito;
+		boton_actualizar_carrito_img.onclick = function(){ carrito.abrir = null; carrito(); }; 
 		boton_comprar_carrito_a.onclick = realizar_compra;
 				
 		caja_div.appendChild(botonera_carrito_div);
@@ -523,7 +544,8 @@ function carrito( abrir ) { //Paso 1
 		//boton_comprar_carrito_a.appendChild(boton_comprar_carrito_img);
 		//boton_comprar_carrito_a.appendChild(boton_comprar_carrito_p_txt);
 		
-	}else if (disco_id2=='actualizar') {
+	//}else if (disco_id2=='actualizar') {
+	}else if ( carrito.abrir == null) {
 		/*
 		Carga array de las filas de los productos
 		obtiene el "Id del productos desde los elementos a (que son las etiquetas para eliminar)
@@ -537,13 +559,13 @@ function carrito( abrir ) { //Paso 1
 			if(!isNaN(fila)){
 				var id = fila[j].getElementsByTagName('a')[0];
 				id = id.getAttribute('id');
-				var valor = fila[j].getElementsByTagName('input')[0].value;
+				valor = fila[j].getElementsByTagName('input')[0].value;
 			
-				discos[id].cantidad = valor;
+				//discos[id].cantidad = valor;
 			}
 		}
 		
-		var this_ = this;
+		var this_ = gEID('actualizar');
 		this_.setAttribute('src',boton_echo_img);
 		
 		var restablecer_boton = setTimeout(
@@ -552,7 +574,8 @@ function carrito( abrir ) { //Paso 1
 					clearTimeout(restablecer_boton);
 				}, 600);
 				
-	}else if (disco_id2=='cerrar') { 
+	//}else if (disco_id2=='cerrar') { 
+	}else if (carrito.abrir == false ) {
 		
 		var opacidad = 0.99;
 		var ocultar = function () {
@@ -568,8 +591,9 @@ function carrito( abrir ) { //Paso 1
 		ocultar();
 			
 	}else {
-		this.setAttribute('id','cerrar');
-		carrito('cerrar');
+		//this.setAttribute('id','cerrar');
+		carrito.abrir = false;
+		carrito();
 	}
 	
 	return false;
