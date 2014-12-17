@@ -58,7 +58,7 @@ body {background-repeat: repeat; background-image: url('../img/bg.jpg'); backgro
 #detalleDisco { position: absolute; width:100%; top:0; left: 0; height: 100%; border-radius:7px; background-color: rgba(80,5,5,0.7); box-shadow:0 0 8px #000; border-radius:7px;}
 #detalleDisco > div { width: 450px; background-color: #000; margin:50px auto 0 auto; border-radius:7px; padding:15px 30px; text-align: center; box-shadow:0 0 8px #000;}
 #detalleDisco h2 {margin-bottom: 15px; font-weight: bolder; font-size: 22px;}
-#detalleDisco img {max-height: 300px;}
+#detalleDisco > div >img {height: 300px;}
 #detalleDisco p { margin-top:15px; text-align: left;}
 #detalleDisco #botonera {overflow: hidden; margin-top: 20px;}
 #detalleDisco #precio {float: left; border: #F9F9F9 solid 1px; padding:3px; border-radius:3px;}
