@@ -29,7 +29,13 @@ body {background-repeat: repeat; background-image: url('../img/bg.jpg'); backgro
 #head > img {height: 180px; margin:8px 18px; float: left; box-shadow: 0 0 5px #333; }
 #head > div {background-color: rgba(255,200,200,0.2); width: 700px; border-radius:3px; float: right; margin:40px 0 70px 0;}
 #head > div > h1 { background-color: rgb(0,0,0); margin:5px 0; padding-bottom:5px; font-family: Verdana , Helvetica , Sans; font-weight: normal; }
-#head > ul {border-radius: 3px; float: right; background-color: #1E1E1E; padding:0 50px; margin-right: 0;}
+#head > ul {
+  border-radius: 3px; 
+  float: right; 
+  background-color: #1E1E1E; 
+  padding:0 50px; 
+  margin-right: 0;
+}
 #head > ul > li {  margin:9px 10px;  display: inline-block; color: #F9F9F9; border: 2px solid #333;  border-radius: 3px;}
 #head > ul li a {background-color: rgb(198,0,0); padding: 3px 7px; font-weight: bold; font-family: serif; }
 
