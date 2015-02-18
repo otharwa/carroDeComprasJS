@@ -46,6 +46,9 @@ ToDo
 		hacer que se bloquee el agregado de items durante el checkout (una variable y listo 0, 1)
 	
 	codigo feo y asqueroso, cuando lo empeze a escribir no conosia POO y no almacenaba los objetos en arrays
+
+
+Hoo!!! Por dios, porque no tengo una funcion para el desvanecer cajas.	
 */
 
 
@@ -128,6 +131,8 @@ function navegacion(posActual){
 
 
 function compra_finalizada(){
+	titulo('Compra Finalizada');
+
 	form = document.getElementById('detalleCompra');
 	form = form.getElementsByTagName('form')[0];
 
@@ -149,6 +154,7 @@ function compra_finalizada(){
 
 
 function realizar_compra() {
+	titulo('Confirmar Compra');
 	//esta funcion carga el paso 2 de la compra.... luego de que el usuario apreto el boton "efectuar compra"
 	//Aqui se carga el CheckOut
 	
@@ -164,17 +170,22 @@ function realizar_compra() {
 		{objetoId:'div', etiqueta:'div',},
 		{objetoId:'titulo', etiqueta:'p', texto:'Datos de Contacto'},
 		{objetoId:'fieldset', etiqueta:'fieldset'},
-		{objetoId:'nombre', etiqueta:'input', type:'text', name:'nombre1', id:'nombre1', texto:'Nombre'},
-		{objetoId:'apellido', etiqueta:'input', type:'text', name:'apellido1', id:'apellido1', texto:'Apellido'},
-		{objetoId:'ciudad', etiqueta:'input', type:'text', name:'ciudad1', id:'ciudad1', texto:'Ciudad'},
-		{objetoId:'provincia', etiqueta:'input', type:'text', name:'provincia1', id:'provincia1', texto:'Provincia'},
+		{objetoId:'nombre', etiqueta:'input', type:'text', name:'nombre1', id:'nombre1', texto:'Nombre', 'data-valid': 'texto'},
+		{objetoId:'apellido', etiqueta:'input', type:'text', name:'apellido1', id:'apellido1', texto:'Apellido', 'data-valid': 'texto'},
+		{objetoId:'ciudad', etiqueta:'input', type:'text', name:'ciudad1', id:'ciudad1', texto:'Ciudad', 'data-valid': 'texto'},
+		{objetoId:'provincia', etiqueta:'input', type:'text', name:'provincia1', id:'provincia1', texto:'Provincia', 'data-valid': 'texto'},
 		{objetoId:'pais', etiqueta:'select', name:'pais1', id:'pais1', texto:'Pais', list:['Argentina','Chile','Uruguay','Otro']},
-		{objetoId:'direccion', etiqueta:'textarea', name:'direccion1', id:'nombre1', texto:'Direccion',rows:'2', cols:'20'},
-		{objetoId:'cp', etiqueta:'input', type:'text', name:'cp1', id:'cp1', texto:'CodigoPostal'},
-		{objetoId:'telefono', etiqueta:'input', type:'text', name:'telefono1', id:'telefono1', texto:'Telefono'},
-		{objetoId:'email', etiqueta:'input', type:'text', name:'email1', id:'email1', texto:'E-Mail'}
+		{objetoId:'direccion', etiqueta:'textarea', name:'direccion1', id:'nombre1', texto:'Direccion',rows:'2', cols:'20', 'data-valid': 'texto'},
+		{objetoId:'cp', etiqueta:'input', type:'text', name:'cp1', id:'cp1', texto:'CodigoPostal', 'data-valid': 'cp'},
+		{objetoId:'telefono', etiqueta:'input', type:'text', name:'telefono1', id:'telefono1', texto:'Telefono', 'data-valid': 'tel'},
+		{objetoId:'email', etiqueta:'input', type:'text', name:'email1', id:'email1', texto:'E-Mail', 'data-valid': 'email'}
 	]);
-	
+	/*
+		Lalala !! Que linda que es la vida cuando las cosas hacen lo que tienen que hacer, 
+		y cuando tu codigo te facilita la vida en ves de complicarla.
+
+		Aguante 'data-valid' !!
+	*/
 	var formulario2 = cDom([
 		{objetoId:'div', etiqueta:'div',},
 		{objetoId:'titulo', etiqueta:'p', texto:'Datos de Entrega'},
@@ -365,6 +376,9 @@ function realizar_compra() {
 				});
 				
 //Agregar Validacion de datos
+	/* No entiendo que hace esto aca, ni como funciona, pero si lo quito deja de andar la validacion de datos
+		Facking code !! :P
+	*/
 				for(var campo in camposRequeridos){
 					//var regla = camposRequeridos[campo];
 					
@@ -393,6 +407,8 @@ function realizar_compra() {
 }
 
 function carrito( accion ){ //Paso 1
+	titulo('Carrito');
+
 	//Esta es la parte dinamica del carro de compras, donde el usuario puede ver y modificar sus acciones
 	
 	//colocar etiqueta form porque estoy usando input <--- y esto que significa ? no me voy a poner a reescribir esta funcion si ya anda
@@ -610,7 +626,8 @@ function carrito( accion ){ //Paso 1
 }
 
 function descripcion_disco(){
-	
+	//titulo('Descripcion');
+
 	var disco_id = this.getAttribute('id');
 
 	var caja = gEID('caja');
@@ -692,7 +709,7 @@ function descripcion_disco(){
 	}else{ 
 		var opacidad = 0.99;
 		var ocultar = function () {
-					opacidad = parseFloat(opacidad-0.01);
+					opacidad = parseFloat(opacidad-0.1);
 					detalleDisco.style.opacity = opacidad;
 					
 					if (opacidad<0.05) {
@@ -716,7 +733,8 @@ function discografia(pagina){
 	
 //fin-configuracion
 
-	
+	titulo('Discografía');
+
 	var comienzo = (pagina * (imgXfila * filas));
 	var cont_filas = 1;
 	var count_img = 0;
@@ -824,5 +842,12 @@ function discografia(pagina){
 		
 		} //cierre -- if (pagina!='cerrar')
 	
+	return false;
+}
+
+function titulo( seccion ){
+	pos = document.getElementById('actual');
+	pos.innerHTML = seccion;
+
 	return false;
 }
