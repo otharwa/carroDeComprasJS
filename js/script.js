@@ -22,6 +22,12 @@ boton_carro.onclick = carrito;
 
 function cE(elemento) {return document.createElement(elemento);}
 function gEID(elemento) {return document.getElementById(elemento);}
+function cleanCaja(){ 
+	contenido = document.body.childNodes[3].childNodes[1];
+	if( contenido != undefined )
+		document.body.childNodes[3].removeChild( contenido ); 
+	
+	return false; }
 
 
 /*
@@ -51,8 +57,24 @@ ToDo
 
 Hoo!!! Por dios, porque no tengo una funcion para el desvanecer cajas.	
 */
+// Cambiar el nombre de la seccion
+function titulo( seccion, this_ ){
+	seccion = new String(seccion);
+	// Cambiar div "Actual :"
+	pos = document.getElementById('ruta');
+	pos = pos.getElementsByTagName('span')[0];
+	pos.innerHTML = seccion;
 
-
+	// Cambiar etiqueta <title>
+	title = document.getElementsByTagName('title')[0];
+	text = title.innerHTML;
+	text = text.split(' \|');
+	text[0] = seccion;
+	title.innerHTML = text.join(' \|');
+	
+	//cleanCaja();
+	return false;
+}
 
 //generador automatico de pasos
 function navegacion(posActual){
@@ -376,7 +398,6 @@ function realizar_compra() {
 					paddingBottom: '15px'
 				});
 				
-//Agregar Validacion de datos
 	/* No entiendo que hace esto aca, ni como funciona, pero si lo quito deja de andar la validacion de datos
 		Facking code !! :P
 	*/
@@ -409,6 +430,7 @@ function realizar_compra() {
 
 function carrito( accion ){ //Paso 1
 	titulo('Carrito');
+	cleanCaja();
 
 	//Esta es la parte dinamica del carro de compras, donde el usuario puede ver y modificar sus acciones
 	
@@ -636,7 +658,10 @@ function descripcion_disco(){
 	
 	if (disco_id!='cerrar') {
 		
-		if (detalleDisco!=undefined) { head.removeChild(detalleDisco); }
+		if (detalleDisco!=undefined)
+			head.removeChild(detalleDisco);
+
+		titulo( discos[disco_id].titulo );
 		
 		//Creacion de los elementos
 		
@@ -708,6 +733,8 @@ function descripcion_disco(){
 
 				
 	}else{ 
+		titulo('Discografía');
+
 		var opacidad = 0.99;
 		var ocultar = function () {
 					opacidad = parseFloat(opacidad-0.1);
@@ -728,13 +755,18 @@ function discografia(pagina){
 
 //configuracion
 
-	//var pagina = 0;
+	//var pagina = 0; -> variable de paginacion 
 	var imgXfila=3;
 	var filas=2;
 	
 //fin-configuracion
-
-	titulo('Discografía');
+	if(pagina > 0 ){
+		txt = 'Pagina '+(pagina + 1) ;
+		titulo( txt );
+	}
+	else {
+		titulo('Discografía');
+	}
 
 	var comienzo = (pagina * (imgXfila * filas));
 	var cont_filas = 1;
@@ -745,9 +777,9 @@ function discografia(pagina){
 	var detalleCompra = gEID('detalleCompra');
 	
 	if (pagina!='cerrar') {
-
+		
 		if (discografia!=undefined) caja.removeChild(discografia);
-		if (detalleCompra!=undefined) caja.removeChild(detalleCompra); //--> si hubiera echo todo con objetos podria haber echo carrito.cerrar()
+		if (detalleCompra!=undefined) caja.removeChild(detalleCompra); //--> de haber echo todo con objetos podria haber echo carrito.cerrar()
 
 		discografia = cE('ul');
 		discografia.setAttribute('id','discografia');
@@ -803,7 +835,7 @@ function discografia(pagina){
 						var opa = 0.99;
 						
 						var opacar_oferta = function () {
-								opa = parseFloat(opa-0.01);
+								opa = parseFloat(opa-0.1);
 								
 								var oferta_h2 = gEID('oferta_especial'); //Redundancia para evitar errores
 								
@@ -843,13 +875,5 @@ function discografia(pagina){
 		
 		} //cierre -- if (pagina!='cerrar')
 	
-	return false;
-}
-
-function titulo( seccion ){
-	pos = document.getElementById('ruta');
-	pos = pos.getElementsByTagName('span')[0];
-	pos.innerHTML = seccion;
-
 	return false;
 }
