@@ -24,7 +24,8 @@ function cE(elemento) {return document.createElement(elemento);}
 function gEID(elemento) {return document.getElementById(elemento);}
 
 
-/*Nota para una mejor lectura del codigo
+/*
+# Nota para una mejor lectura del codigo
 La construcion se fue realizando de abajo (la ultima funcion) hacia arriba (la primer funcion)
 Si algo se ve fuera de contexto al principio es porque sirve mas a bajo durante la funcion probablemente en alguna sugunda alternativa
 Administracion del tiempo:
@@ -846,7 +847,8 @@ function discografia(pagina){
 }
 
 function titulo( seccion ){
-	pos = document.getElementById('actual');
+	pos = document.getElementById('ruta');
+	pos = pos.getElementsByTagName('span')[0];
 	pos.innerHTML = seccion;
 
 	return false;
