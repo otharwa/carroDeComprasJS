@@ -8,6 +8,7 @@ var boton_agregar1_img = 'img/iconos/boton_agregar.gif';
 var boton_agregar2_img = 'img/iconos/boton_agregado2.gif';
 var boton_atras_img = 'img/iconos/Arrow-Left.gif';
 var boton_adelante_img = 'img/iconos/arrows.png';
+var validacion_status = true;
 var discos = [];	
 discos = [
 				{titulo:'America Solar Borde', imagen:'America_Solar_Borde.jpg', descrip:'', precio:25.4, cantidad: 1, estado: 0, oferta:true},

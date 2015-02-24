@@ -26,7 +26,7 @@ function cleanCaja(){
 	contenido = document.body.childNodes[3].childNodes[1];
 	if( contenido != undefined )
 		document.body.childNodes[3].removeChild( contenido ); 
-	
+
 	return false; }
 
 
@@ -57,13 +57,46 @@ ToDo
 
 Hoo!!! Por dios, porque no tengo una funcion para el desvanecer cajas.	
 */
+
+function subtotal(view){
+	//Uso : subtotal();
+	//Valores recividos : true, false
+	//Default: true
+	//Retorno : true -> false, imprime en pantalla - false -> valor number, costo 
+	costo=parseFloat(0);
+	unidades=parseInt(0);
+
+	for(var i in discos){
+		if(discos[i].estado == 1){ // esta activo ?
+				costo = costo + parseFloat(discos[i].precio * discos[i].cantidad);
+				unidades = parseInt(unidades + discos[i].cantidad);
+		}
+	}
+
+	if( view != false ){
+		//Escribir en pantalla
+		subtotalD = document.getElementById('subtotal');
+		subtotalD = subtotalD.getElementsByTagName('span')[0];
+		subtotalD.innerHTML = costo;
+
+		dicostotal = document.getElementById('dicostotal');
+		dicostotal = dicostotal.getElementsByTagName('span')[0];
+		dicostotal.innerHTML = unidades;
+
+		return false;
+	}
+	else{
+		return costo;
+	}
+}
+
 // Cambiar el nombre de la seccion
 function titulo( seccion, this_ ){
 	seccion = new String(seccion);
 	// Cambiar div "Actual :"
-	pos = document.getElementById('ruta');
-	pos = pos.getElementsByTagName('span')[0];
-	pos.innerHTML = seccion;
+	ruta = document.getElementById('ruta');
+	ruta = ruta.getElementsByTagName('span')[0];
+	ruta.innerHTML = seccion;
 
 	// Cambiar etiqueta <title>
 	title = document.getElementsByTagName('title')[0];
@@ -76,7 +109,7 @@ function titulo( seccion, this_ ){
 	return false;
 }
 
-//generador automatico de pasos
+//generador automatico de pasos para la seccion de Carrito
 function navegacion(posActual){
 	//Uso : navegacion(n);
 	//Valores recividos : int > 0
@@ -84,9 +117,9 @@ function navegacion(posActual){
 	//Retorno :  objeto DOM para ser insertado donde corresponda
 	var priv = {
 		pasos:[
-			{nombre: 'Estado', funcion: function(){ console.log('boton sin funcion'); return false; } },
-			{nombre: 'Datos de Compra', funcion: function(){ carrito.abrir = true; carrito(); return false; } },
-			{nombre: 'Finalizado!', funcion: function(){ compra_finalizada(); return false; } }
+			{nombre: 'Estado', funcion: function(){ if( validacion_status == false ) console.log('boton sin funcion'); return false; } },
+			{nombre: 'Datos de Compra', funcion: function(){ if( validacion_status == false ) {carrito.abrir = true; carrito(); } return false; } },
+			{nombre: 'Finalizado!', funcion: function(){ if( validacion_status == false ) compra_finalizada(); return false; } }
 		],
 		dom:[],
 		div:false,
@@ -304,10 +337,14 @@ function realizar_compra() {
 					case 'email': check = /^[\w\-\_\.]{3}[a-z0-9A-Z\-\_\.]*[@][\w]{3}[\w\-\_\.]*[\.]?[\w]{2,4}$/;
 						break;
 				}
-				if(! check.test( this_.value ) )
+				if(! check.test( this_.value ) ){
 					var erno = priv.mostrarError(this_.parentNode, "campo invalido");
-				else 
+					validacion_status = true;
+				}
+				else {
 					this_.parentNode.style.border = "none"; 
+					validacion_status = false;
+				}
 			},
 			visualizar:function(){
 				var form = gEID('detalleCompra').getElementsByTagName('form')[0];
@@ -430,7 +467,6 @@ function realizar_compra() {
 
 function carrito( accion ){ //Paso 1
 	titulo('Carrito');
-	cleanCaja();
 
 	//Esta es la parte dinamica del carro de compras, donde el usuario puede ver y modificar sus acciones
 	
@@ -466,6 +502,7 @@ function carrito( accion ){ //Paso 1
 		var elmt_th2 = cE('th');
 		var elmt_th3 = cE('th');
 		var elmt_th4 = cE('th');
+		var elmt_th5 = cE('th');
 		var elmt_tbody = cE('tbody');
 		
 		detalleCompra.setAttribute('id','detalleCompra');
@@ -476,12 +513,14 @@ function carrito( accion ){ //Paso 1
 		var elmt_th1_txt = document.createTextNode('Portada');
 		var elmt_th2_txt = document.createTextNode('Descripcion');
 		var elmt_th3_txt = document.createTextNode('Cantidad');
-		var elmt_th4_txt = document.createTextNode('Remover');
+		var elmt_th4_txt = document.createTextNode('SubTotal');
+		var elmt_th5_txt = document.createTextNode('Remover');
 		
 		elmt_th1.appendChild(elmt_th1_txt);
 		elmt_th2.appendChild(elmt_th2_txt);
 		elmt_th3.appendChild(elmt_th3_txt);
 		elmt_th4.appendChild(elmt_th4_txt);
+		elmt_th5.appendChild(elmt_th5_txt);
 		
 		caja.appendChild(detalleCompra);
 		detalleCompra.appendChild(caja_div);
@@ -491,6 +530,7 @@ function carrito( accion ){ //Paso 1
 		elmt_thead.appendChild(elmt_th2);
 		elmt_thead.appendChild(elmt_th3);
 		elmt_thead.appendChild(elmt_th4);
+		elmt_thead.appendChild(elmt_th5);
 		elmt_tabla.appendChild(elmt_tbody);
 		
 		for (var i in discos) {
@@ -501,6 +541,7 @@ function carrito( accion ){ //Paso 1
 				var elmt_td2 = cE('td'); 
 				var elmt_td3 = cE('td'); 
 				var elmt_td4 = cE('td');
+				var elmt_td5 = cE('td');
 				var elmt_img = cE('img');
 				var elmt_input = cE('input');
 				var elmt_a = cE('a');
@@ -513,17 +554,25 @@ function carrito( accion ){ //Paso 1
 				elmt_input.setAttribute('id','cantidad');
 				elmt_input.setAttribute('value',discos[i].cantidad);
 				elmt_input.setAttribute('size','2');
+
+				//Click en boton actualizar
 				elmt_input.onchange = function(){
 					idItem = this.parentNode.parentNode.getElementsByTagName('a')[0].getAttribute('id');
 					discos[idItem].cantidad = this.value;
 
+					//actualizar subtotal
+					this.parentNode.parentNode.getElementsByTagName('td')[3].innerHTML = '$' + parseFloat(discos[idItem].cantidad * discos[idItem].precio );
+
 					carrito.abrir = null;
+					subtotal(true);
 					carrito();
 				}
 				elmt_a.setAttribute('href','#');
 				elmt_a.setAttribute('id',i);
 				elmt_a_img.setAttribute('src',boton_remover_img);
 				elmt_a_img.setAttribute('alt','remover');
+
+				//Click en cruz eliminar
 				elmt_a.onclick = function () {
 					j = this.getAttribute('id');
 					this.parentNode.parentNode.parentNode.removeChild(this.parentNode.parentNode);
@@ -533,16 +582,20 @@ function carrito( accion ){ //Paso 1
 				}
 				
 				var elmt_td2_txt = document.createTextNode('Descripcion');
+				var discoSubTotal = parseFloat( discos[i].cantidad * discos[i].precio );
+				discoSubTotal = document.createTextNode('$'+ discoSubTotal); 
 				
 				elmt_tbody.appendChild(elmt_tr);
 				elmt_tr.appendChild(elmt_td1);
 				elmt_tr.appendChild(elmt_td2);
 				elmt_tr.appendChild(elmt_td3);
 				elmt_tr.appendChild(elmt_td4);
+				elmt_tr.appendChild(elmt_td5);
 				elmt_td1.appendChild(elmt_img);
 				elmt_td2.appendChild(elmt_td2_txt);
 				elmt_td3.appendChild(elmt_input);
-				elmt_td4.appendChild(elmt_a);
+				elmt_td4.appendChild(discoSubTotal);
+				elmt_td5.appendChild(elmt_a);
 				elmt_a.appendChild(elmt_a_img);
 			}//cierre - if (discos[i].estado == 1) {
 		}//cierre - for (var i in discos) {
@@ -575,7 +628,10 @@ function carrito( accion ){ //Paso 1
 		boton_comprar_carrito_a.setAttribute('title', "Efectuar Compra");
 		
 		boton_cerrar_carrito_img.onclick = carrito;
-		boton_actualizar_carrito_img.onclick = function(){ carrito.abrir = null; carrito(); }; 
+		boton_actualizar_carrito_img.onclick = function(){ 
+			carrito.abrir = null; 
+			carrito();
+		}; 
 		boton_comprar_carrito_a.onclick = realizar_compra;
 				
 		caja_div.appendChild(botonera_carrito_div);
@@ -725,6 +781,8 @@ function descripcion_disco(){
 					discos[disco_id].estado = 1;
 					boton_agregar.setAttribute('src',boton_agregar2_img);
 					boton_agregar.setAttribute('alt','Agregado Al Carrito');
+
+					subtotal(true);
 				};
 		}else {
 			boton_agregar.setAttribute('src',boton_agregar2_img);
