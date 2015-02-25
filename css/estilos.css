@@ -47,7 +47,7 @@ body {
 body {
   background-repeat: repeat; 
   background-image: url('../img/bg.jpg'); 
-  background-size: cover; 
+  background-size: cover !important; 
   color: whitesmoke; 
   padding-bottom: 50px; }
 
@@ -100,6 +100,28 @@ body {
   padding: 3px 7px; 
   font-weight: bold; 
   font-family: serif; }
+#head > .status {
+  display: inline-block;
+  float: right;
+  margin: 0;
+  text-align: right;
+  background-color: transparent !important;
+  color: #f0f0f0;
+}
+#head > .status div {
+  display: inline;
+  margin: 0 3px;
+}
+#head > .status div > p {
+  display: inline;
+  margin: 0;
+  padding: 0;
+}
+#head > .status a {
+  display: inline-block;
+  margin: 0;
+}
+
 
 #discos {
   position: relative;}
@@ -262,12 +284,12 @@ div > a.atras {
   font-size: 12px; 
   margin-right: 80px; 
   background: url('../img/iconos/arrows.png') no-repeat -3px -6px;
-	background-size: 67px 59px;
+	background-size: 67px 59px !important;
 	width: 26px;
 	height: 19px;}
 div > a.atras:hover { 
   background: url('../img/iconos/arrows.png') no-repeat -3px -35px;
-	background-size: 67px 59px;
+	background-size: 67px 59px !important;
 	width: 26px;
 	height: 19px;}
 div > a.siguiente,
@@ -276,13 +298,13 @@ span > a.siguiente {
   width: 70px; 
   font-size: 12px; 
   background: url('../img/iconos/arrows.png') no-repeat -35px -6px;
-	background-size: 67px 59px;
+	background-size: 67px 59px !important;
 	width: 26px;
 	height: 19px;}
 div > a.siguiente:hover,
 span > a.siguiente:hover { 
   background: url('../img/iconos/arrows.png') no-repeat -35px -35px;
-	background-size: 67px 59px;
+	background-size: 67px 59px !important;
 	width: 26px;
 	height: 19px;}
 
@@ -301,7 +323,7 @@ div#pasos {
   width:500px;}
 #numeros { 
   background-repeat: repeat-x;
-  background-size: 10px;
+  background-size: 10px !important;
   position: relative;
   background-position: top ;
   display: block;

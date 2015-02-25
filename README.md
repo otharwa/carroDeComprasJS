@@ -1,14 +1,20 @@
-Carro de Compras JS
+# Proyecto: Carro de Compras JS
 ==================
-Codigo artesanal sin uso de frameworks echo para el final de la materia Programacion I segundo cuatrimestre
+Codigo artesanal sin uso de frameworks hecho para el final de la materia Programacion I segundo cuatrimestre
 
-toDO
+## Que haceres 
 ====
-+ Modificar transciones (hacer menos locuras y que quede lineal)
-+ hacer fundido de descripcion de los discos --> PPO?
-+ agregar datos visuales permanentes para el comprador (hoja en la que esta, cantidad de discos, subtotal)
+ * Emprolijar visual de subtotales (subir 5px)
+ * Carro de compras 
+ 	* agregar campos de targeta (informacioin de pago)
+ 	* informacion de subtotales mas visible
+ 	* cerrar carro que haga algo copado
+ * Inicio, que tenga algo diferente, o mas util que solo existir
+ * Que inicio muestre algo coherente
+ * PPO al fundido de divs
+ * Ventana modal para el carrito de compras (ya que tengo que agregar la etiqueta form usarla como cuadro contendor)
 
-+ LA VALIDACION NO ANDA
+
 
 //Codigo realizado enteramente por Sebastian Arca otharwa@navebinario.com
 
