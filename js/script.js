@@ -707,7 +707,10 @@ function carrito( accion ){ //Paso 1
 function descripcion_disco(){
 	//titulo('Descripcion');
 
-	var disco_id = this.getAttribute('id');
+	disco_id = this.getAttribute('data-id');
+	if( disco_id == undefined )
+		disco_id = this.getAttribute('id');
+
 
 	var caja = gEID('caja');
 	var detalleDisco = gEID('detalleDisco');
@@ -873,7 +876,7 @@ function discografia(pagina){
 		
 			imagen.src=ruta_tapas+discos[j].imagen;
 			imagen.alt=discos[j].titulo;
-			imagen.setAttribute('id',j)
+			imagen.setAttribute('data-id',j)
 			imagen.onclick = descripcion_disco;
 			h2.innerHTML = discos[j].titulo;
 		
