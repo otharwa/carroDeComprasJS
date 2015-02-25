@@ -13,7 +13,7 @@ Codigo artesanal sin uso de frameworks hecho para el final de la materia Program
  * Que inicio muestre algo coherente
  * PPO al fundido de divs
  * Ventana modal para el carrito de compras (ya que tengo que agregar la etiqueta form usarla como cuadro contendor)
-
+* [Que sea valido para IE8 !! ]
 
 
 //Codigo realizado enteramente por Sebastian Arca otharwa@navebinario.com
