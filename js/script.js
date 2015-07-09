@@ -929,7 +929,8 @@ function discografia(pagina){
 					
 					if (opacidad<0.05) {
 						clearTimeout(cron);
-						caja.removeChild(discografia);
+
+						discografia.parentNode.removeChild(discografia);
 					} else var cron = setTimeout(ocultar,1);
 			};
 		ocultar();
