@@ -18,4 +18,4 @@ Codigo artesanal sin uso de frameworks hecho para el final de la materia Program
 
 //Codigo realizado enteramente por Sebastian Arca otharwa@navebinario.com
 
-Vista en linea http://navebinario.com/demos-portfolio/carroDeComprasJS
+Vista en linea http://navebinario.com/demos/carroDeComprasJS
